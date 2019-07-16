@@ -1,0 +1,99 @@
+#
+# Makefile.example for H/W Hobby
+# - Copy this file to Makefile and run 'make' and follow the help guide.
+#
+
+# Overrides from user
+TARGET_DEVICE ?= RPI
+BUILD_FOLDER  ?= ./build
+BUILD_TYPE    ?= debug
+
+#
+# Supported target devices
+#	RPI for Raspberry Pi
+#	STM32F103 for STM32F103C8T6
+#
+ifeq ($(TARGET_DEVICE),RPI)
+	TD_PLATFORM = armv6l-linux
+	TD_BOARDNAME = rpi
+	TD_ROOFS_ARM ?= $(HOME)/rootfs/arm.buster
+endif
+ifeq ($(TARGET_DEVICE),STM32F103)
+	TD_PLATFORM = cortex-m3-none
+	TD_BOARDNAME = stm32f103c8t6
+endif
+
+TD_CMAKE_CFG = config_$(TD_PLATFORM).cmake
+
+TD_CMAKE_DEFS := -DCMAKE_BUILD_TYPE=$(BUILD_TYPE)
+TD_CMAKE_DEFS += -DCMAKE_TOOLCHAIN_FILE=./cmake/config/$(TD_CMAKE_CFG)
+TD_CMAKE_DEFS += -DTARGET_PLATFORM=$(TD_PLATFORM)
+TD_CMAKE_DEFS += -DTARGET_BOARD=$(TD_BOARDNAME)
+
+# CMake build paths
+CMAKE_DEFS = $(TD_CMAKE_DEFS)
+BUILD_PATH = $(BUILD_FOLDER)/$(TD_BOARDNAME)/$(BUILD_TYPE)
+CMAKE_BASE = -B$(BUILD_PATH)
+CMAKE_HOME = -H./
+
+# phony dependencies
+PHONY_DEPS := help create_build_path
+# our targets
+PHONY_DEPS += rpi stm32f103
+# internal cmake targets
+PHONY_DEPS += cmake_configure cmake_configure
+PHONY_DEPS += cmake_build
+
+.PHONY: $(PHONY_DEPS)
+
+# show help message for default make
+help:
+	@echo "Make targets to build"
+	@echo "  make rpi"
+	@echo "  make stm32f103 (or just stm)"
+	@echo "Make targets to write binary to flash"
+	@echo "  make stmflash"
+	@echo ""
+
+clean:
+	rm -rf $(BUILD_FOLDER)
+
+#
+# file based targets
+#
+$(BUILD_PATH)/Makefile:
+	cmake $(CMAKE_BASE) $(CMAKE_HOME) $(CMAKE_DEFS)
+
+#
+# internal targets
+#
+create_build_path:
+	mkdir -p $(BUILD_PATH)
+
+cmake_configure: $(BUILD_PATH)/Makefile
+
+cmake_build:
+	cmake --build $(BUILD_PATH)
+
+flash_stm32f103:
+	# stm32flash -b 9600 -w $(BUILD_PATH)/modules/tools/stm_blinker/stm_blinker.bin /dev/ttyUSB0
+	# stm32flash -b 9600 -w $(BUILD_PATH)/modules/tools/stm_blinker2/stm_blinker2.bin /dev/ttyUSB0
+	stm32flash -b 9600 -w $(BUILD_PATH)/modules/tools/stm_counter/stm_led47counter.bin /dev/ttyUSB0
+
+#
+# targets for users
+#
+rpi:
+	TARGET_DEVICE=RPI make create_build_path
+	TARGET_DEVICE=RPI make cmake_configure
+	TARGET_DEVICE=RPI make cmake_build
+
+stm32f103:
+	TARGET_DEVICE=STM32F103 make create_build_path
+	TARGET_DEVICE=STM32F103 make cmake_configure
+	TARGET_DEVICE=STM32F103 make cmake_build
+
+stm: stm32f103
+
+stmflash:
+	TARGET_DEVICE=STM32F103 make flash_stm32f103
