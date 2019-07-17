@@ -34,54 +34,72 @@ void hwboard_gpio_close(void)
   bcm2835_close();
 }
 
-#define RPI_GPIO_P1_XX 0xffff
+#define RPI_V2_GPIO_P1_XX 0xffff
 
-RPiGPIOPin hwpin_from_pin(ioport_t pin)
+static RPiGPIOPin hwpin_from_gpio(ioport_t gpio)
 {
-  // These are actual pin number in real world.
-  // 'pin' is 0 base but doesn't exist in real world, marked as RPI_GPIO_P1_XX
-  // 'pin' 1 is 3.3V power, 2 is 5V power, also marked as RPI_GPIO_P1_XX,
-  // and 'pin' that isn't GPIO is marked as RPI_GPIO_P1_XX.
+  // These are actual gpio number in real world.
+  // gpio 0 is GPIO 0, which is pin #3
+  // non existance gpio is marked as RPI_V2_GPIO_P1_XX
   static const ioport_t hwpin_table[] = {
-    RPI_GPIO_P1_XX, RPI_GPIO_P1_XX, RPI_GPIO_P1_XX, RPI_GPIO_P1_03, 
-    RPI_GPIO_P1_XX, RPI_GPIO_P1_05, RPI_GPIO_P1_XX, RPI_GPIO_P1_07,
-    RPI_GPIO_P1_08, RPI_GPIO_P1_XX, RPI_GPIO_P1_10, RPI_GPIO_P1_11,
-    RPI_GPIO_P1_12, RPI_GPIO_P1_13, RPI_GPIO_P1_XX, RPI_GPIO_P1_15,
-    RPI_GPIO_P1_16, RPI_GPIO_P1_XX, RPI_GPIO_P1_18, RPI_GPIO_P1_19,
-    RPI_GPIO_P1_XX, RPI_GPIO_P1_21, RPI_GPIO_P1_22, RPI_GPIO_P1_23,
-    RPI_GPIO_P1_24, RPI_GPIO_P1_XX, RPI_GPIO_P1_26
+    RPI_V2_GPIO_P1_XX, // 0
+    RPI_V2_GPIO_P1_XX, // 1
+    RPI_V2_GPIO_P1_03, // GPIO2  I2C-SDA
+    RPI_V2_GPIO_P1_05, // GPIO3  I2C-SCL
+    RPI_V2_GPIO_P1_07, // GPIO4
+    RPI_V2_GPIO_P1_XX, // 5
+    RPI_V2_GPIO_P1_XX, // 6
+    RPI_V2_GPIO_P1_26, // GPIO7  SPI0-CE1
+    RPI_V2_GPIO_P1_24, // GPIO8  SPI0-CE0
+    RPI_V2_GPIO_P1_21, // GPIO9  SPI0-MISO
+    RPI_V2_GPIO_P1_19, // GPIO10 SPI0-MOSI
+    RPI_V2_GPIO_P1_23, // GPIO11 SPI0-CLK
+    RPI_V2_GPIO_P1_XX, // 12
+    RPI_V2_GPIO_P1_XX, // 13
+    RPI_V2_GPIO_P1_08, // GPIO14 UART0-TXD
+    RPI_V2_GPIO_P1_10, // GPIO15 UART0-RXD
+    RPI_V2_GPIO_P1_XX, // 16
+    RPI_V2_GPIO_P1_11, // GPIO17
+    RPI_V2_GPIO_P1_12, // GPIO18 PWM
+    RPI_V2_GPIO_P1_XX, // 19
+    RPI_V2_GPIO_P1_XX, // 20
+    RPI_V2_GPIO_P1_XX, // 21
+    RPI_V2_GPIO_P1_15, // GPIO22
+    RPI_V2_GPIO_P1_16, // GPIO23
+    RPI_V2_GPIO_P1_18, // GPIO24
+    RPI_V2_GPIO_P1_22, // GPIO25
   };
-  static const int count = 27;
+  static const int count = 26;
 
-  if (pin >= count)
-    return RPI_GPIO_P1_XX;
+  if (gpio >= count)
+    return RPI_V2_GPIO_P1_XX;
 
-  return hwpin_table[pin];
+  return hwpin_table[gpio];
 }
 
-void hwboard_gpio_set(ioport_t port,  ioport_t pin)
+void hwboard_gpio_set(ioport_t port, ioport_t gpio)
 {
-  RPiGPIOPin hwpin = hwpin_from_pin(pin);
+  RPiGPIOPin hwpin = hwpin_from_gpio(gpio);
 
-  if (hwpin != RPI_GPIO_P1_XX)
+  if (hwpin != RPI_V2_GPIO_P1_XX)
     bcm2835_gpio_set(hwpin);
 }
 
-void hwboard_gpio_clr(ioport_t port, ioport_t pin)
+void hwboard_gpio_clr(ioport_t port, ioport_t gpio)
 {
-  RPiGPIOPin hwpin = hwpin_from_pin(pin);
+  RPiGPIOPin hwpin = hwpin_from_gpio(gpio);
 
-  if (hwpin != RPI_GPIO_P1_XX)
+  if (hwpin != RPI_V2_GPIO_P1_XX)
     bcm2835_gpio_clr(hwpin);
 }
 
-void hwboard_gpio_cfg(ioport_t port, ioport_t pin, uint8_t pudin, uint8_t fselin)
+void hwboard_gpio_cfg(ioport_t port, ioport_t gpio, uint8_t pudin, uint8_t fselin)
 {
-  RPiGPIOPin hwpin = hwpin_from_pin(pin);
+  RPiGPIOPin hwpin = hwpin_from_gpio(gpio);
   bcm2835PUDControl pud = BCM2835_GPIO_PUD_OFF;
   bcm2835FunctionSelect fsel = BCM2835_GPIO_FSEL_INPT;
 
-  if (hwpin == RPI_GPIO_P1_XX)
+  if (hwpin == RPI_V2_GPIO_P1_XX)
     return;
   
   switch (pudin)
