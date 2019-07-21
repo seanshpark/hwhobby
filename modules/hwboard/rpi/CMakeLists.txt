@@ -20,11 +20,11 @@ set_target_properties(hwbrpi PROPERTIES
     INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
-set(SRC src/gpio_bcm2835.c
-)
+set(SRC src/gpio_bcm2835.c)
 
 add_library(hwboardgpio ${SRC})
 target_include_directories(hwboardgpio PUBLIC include)
 target_link_libraries(hwboardgpio PUBLIC hwabc)
 target_link_libraries(hwboardgpio PUBLIC hwgpiodef)
 target_link_libraries(hwboardgpio PUBLIC hwbrpi)
+target_link_libraries(hwboardgpio PUBLIC rt) # realtime system functions

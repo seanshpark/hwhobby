@@ -14,5 +14,11 @@
 # limitations under the License.
 #
 
-add_subdirectory(led4x7seg)
-add_subdirectory(hc-sr04)
+#
+# target hwmodhcsr04 HC-SR04 Ultrasonic Range Sensor
+#
+set(SRC src/hc-sr04.c)
+
+add_library(hwmodhcsr04 ${SRC})
+target_include_directories(hwmodhcsr04 PUBLIC include)
+target_link_libraries(hwmodhcsr04 PUBLIC hwboardgpio)

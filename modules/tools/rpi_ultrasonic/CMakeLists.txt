@@ -14,5 +14,10 @@
 # limitations under the License.
 #
 
-add_subdirectory(led4x7seg)
-add_subdirectory(hc-sr04)
+#
+# target hc-sr04 that measures distance with ultra-sonic
+#
+set(SRC src/ultrasonic_distance.cpp)
+
+add_executable(ultrasonic_distance ${SRC})
+target_link_libraries(ultrasonic_distance hwmodhcsr04)

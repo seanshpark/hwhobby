@@ -14,29 +14,22 @@
  * limitations under the License.
  */
 
-#ifndef __HWHOBBY_STANDARD_H__
-#define __HWHOBBY_STANDARD_H__
+#ifndef __MODULE_HC_SR04_H__
+#define __MODULE_HC_SR04_H__
 
-//
-// types for common
-//
+#include <hwabc/standard.h>
+
 #ifdef __cplusplus
+extern "C" {
+#endif
 
-#include <cstdint>
+int hcsr04_init(ioport_t trig_port, ioport_t trig_pin, ioport_t echo_port, ioport_t echo_pin);
+void hcsr04_close(void);
 
-#else // __cplusplus
+int hcsr04_measure_time(void);
 
-typedef unsigned char uint8_t;
-typedef unsigned short int uint16_t;
-typedef unsigned int uint32_t;
-typedef unsigned long long uint64_t;
+#ifdef __cplusplus
+}
+#endif
 
-#endif // __cplusplus
-
-//
-// types for H/W
-//
-typedef uint16_t ioport_t;
-typedef uint64_t hwusec_t;
-
-#endif // __HWHOBBY_STANDARD_H__
+#endif // __MODULE_HC_SR04_H__

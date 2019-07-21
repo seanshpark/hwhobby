@@ -18,6 +18,7 @@
 #include <bcm2835/bcm2835.h>
 
 #include <assert.h>
+#include <time.h>
 #include <unistd.h> // for usleep
 
 int hwboard_gpio_init(void)
@@ -93,6 +94,16 @@ void hwboard_gpio_clr(ioport_t port, ioport_t gpio)
     bcm2835_gpio_clr(hwpin);
 }
 
+ioport_t hwboard_gpio_get(ioport_t port, ioport_t gpio)
+{
+  RPiGPIOPin hwpin = hwpin_from_gpio(gpio);
+
+  if (hwpin != RPI_V2_GPIO_P1_XX)
+    return bcm2835_gpio_lev(hwpin);
+
+  return 0;
+}
+
 void hwboard_gpio_cfg(ioport_t port, ioport_t gpio, uint8_t pudin, uint8_t fselin)
 {
   RPiGPIOPin hwpin = hwpin_from_gpio(gpio);
@@ -120,5 +131,20 @@ void hwboard_gpio_cfg(ioport_t port, ioport_t gpio, uint8_t pudin, uint8_t fseli
 
 void hwboard_delay(int usec)
 {
-  usleep(usec);
+  // usleep(usec);
+  bcm2835_delayMicroseconds(usec);
+}
+
+///@ elapased time in usec
+hwusec_t hwboard_time(void)
+{
+  struct timespec time;
+  hwusec_t time_val;
+
+  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time);
+
+  time_val = time.tv_nsec / 1000ull;
+  time_val += time.tv_sec * 1000000ull;
+
+  return time_val;
 }

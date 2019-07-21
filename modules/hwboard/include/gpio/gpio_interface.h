@@ -44,6 +44,11 @@ void hwboard_gpio_set(ioport_t port, ioport_t pin);
 void hwboard_gpio_clr(ioport_t port, ioport_t pin);
 
 /**
+ * @brief Get port value
+ */
+ioport_t hwboard_gpio_get(ioport_t port, ioport_t pin);
+
+/**
  * @brief Configure port
  * 
  * @note  This may change. RPi for now.
@@ -59,6 +64,11 @@ void hwboard_gpio_cfg(ioport_t port, ioport_t pin, uint8_t pud, uint8_t fsel);
 
 void hwboard_delay(int usec);
 void hwboard_delay_ms(int msec);
+
+/**
+ * current system time in usec
+ */
+hwusec_t hwboard_time(void);
 
 #ifdef __cplusplus
 }
