@@ -17,8 +17,6 @@
 #include <hwchip/tm1637.h>
 #include <gpio/gpio_interface.h>
 
-#include <unistd.h>
-
 static const uint8_t CLOCK_DELAY = 20;
 static const uint8_t DATA_DELAY = 5;
 
