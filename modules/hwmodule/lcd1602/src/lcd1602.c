@@ -89,20 +89,20 @@ void lcd1602_home(void)
 {
   uint8_t cmd = HD44780_LCD_CMD_RETHOME;
   i2clcd_send_ctrl(cmd);
-  hwboard_delay(500);
+  hwboard_delay(5000); // max 5msec
 }
 
 void lcd1602_clear(void)
 {
   uint8_t cmd = HD44780_LCD_CMD_CLEAR;
   i2clcd_send_ctrl(cmd);
-  hwboard_delay(1000);
+  hwboard_delay(5000); // max 5msec
 }
 
 void lcd1602_putc(const char c)
 {
   i2clcd_send_data(c);
-  hwboard_delay(100);
+  hwboard_delay(120);
 }
 
 void lcd1602_puts(const char* str)
@@ -127,5 +127,5 @@ void lcd1602_moverc(uint8_t row, uint8_t col)
   ram_offset &= 0b01111111;
 
   i2clcd_send_ctrl(cmd + ram_offset);
-  hwboard_delay(500);
+  hwboard_delay(120);
 }
