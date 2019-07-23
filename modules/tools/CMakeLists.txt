@@ -21,6 +21,7 @@
 if("${TARGET_BOARD}" STREQUAL "rpi")
   add_subdirectory(rpi_counter)
   add_subdirectory(rpi_ultrasonic)
+  add_subdirectory(rpi_lcd1602)
 endif()
 
 if("${TARGET_BOARD}" STREQUAL "stm32f103c8t6")

@@ -14,6 +14,11 @@
 # limitations under the License.
 #
 
-add_subdirectory(tm1637)
-add_subdirectory(hd44780)
-add_subdirectory(pcf8574)
+#
+# target hwcpcf8574 for HW Chip PCF8574
+#
+set(SRC src/pcf8574.c)
+
+add_library(hwcpcf8574 ${SRC})
+target_include_directories(hwcpcf8574 PUBLIC include)
+target_link_libraries(hwcpcf8574 PUBLIC hwboardgpio)

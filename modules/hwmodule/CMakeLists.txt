@@ -16,3 +16,6 @@
 
 add_subdirectory(led4x7seg)
 add_subdirectory(hc-sr04)
+
+add_subdirectory(i2clcd)
+add_subdirectory(lcd1602)

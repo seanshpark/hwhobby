@@ -70,6 +70,16 @@ void hwboard_delay_ms(int msec);
  */
 hwusec_t hwboard_time(void);
 
+//
+// Experiments with I2C
+//  - build up with RPi
+//  - need to test with STM32F103
+//
+
+int hwboard_i2c_open(ioport_t i2caddr);
+void hwboard_i2c_close(void);
+void hwboard_i2c_send_byte(uint8_t one);
+
 #ifdef __cplusplus
 }
 #endif

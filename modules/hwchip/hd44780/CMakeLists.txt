@@ -14,6 +14,11 @@
 # limitations under the License.
 #
 
-add_subdirectory(tm1637)
-add_subdirectory(hd44780)
-add_subdirectory(pcf8574)
+#
+# target hwchd44780 for HW Chip HD44780
+#
+set(SRC src/hd44780.c)
+
+add_library(hwchd44780 ${SRC})
+target_include_directories(hwchd44780 PUBLIC include)
+target_link_libraries(hwchd44780 PUBLIC hwboardgpio)

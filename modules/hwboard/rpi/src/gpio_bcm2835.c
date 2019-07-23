@@ -135,6 +135,12 @@ void hwboard_delay(int usec)
   bcm2835_delayMicroseconds(usec);
 }
 
+void hwboard_delay_ms(int msec)
+{
+  uint64_t usec = msec * 1000ull;
+  bcm2835_delayMicroseconds(usec);
+}
+
 ///@ elapased time in usec
 hwusec_t hwboard_time(void)
 {
@@ -147,4 +153,24 @@ hwusec_t hwboard_time(void)
   time_val += time.tv_sec * 1000000ull;
 
   return time_val;
+}
+
+int hwboard_i2c_open(ioport_t i2caddr)
+{
+  bcm2835_i2c_begin();
+  bcm2835_i2c_setSlaveAddress(i2caddr);
+
+  return 0;
+}
+
+void hwboard_i2c_close(void)
+{
+  bcm2835_i2c_end();
+}
+
+void hwboard_i2c_send_byte(uint8_t one)
+{
+  char buf[1];
+  buf[0] = (char)one;
+  bcm2835_i2c_write(buf, 1);
 }

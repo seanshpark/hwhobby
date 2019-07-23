@@ -14,6 +14,12 @@
 # limitations under the License.
 #
 
-add_subdirectory(tm1637)
-add_subdirectory(hd44780)
-add_subdirectory(pcf8574)
+#
+# target hwmodi2clcd for I2C I/O expander to control LCD1602
+#
+set(SRC src/i2clcd.c)
+
+add_library(hwmodi2clcd ${SRC})
+target_include_directories(hwmodi2clcd PUBLIC include)
+target_link_libraries(hwmodi2clcd PUBLIC hwcpcf8574)
+target_link_libraries(hwmodi2clcd PUBLIC hwchd44780)

@@ -14,6 +14,10 @@
 # limitations under the License.
 #
 
-add_subdirectory(tm1637)
-add_subdirectory(hd44780)
-add_subdirectory(pcf8574)
+#
+# target led47counter that displays counting numbers with RPi, LED4x7Seg
+#
+set(SRC src/lcd1602.cpp)
+
+add_executable(lcd1602 ${SRC})
+target_link_libraries(lcd1602 hwmodlcd1602)

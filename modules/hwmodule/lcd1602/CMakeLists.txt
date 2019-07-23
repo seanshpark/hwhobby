@@ -14,6 +14,13 @@
 # limitations under the License.
 #
 
-add_subdirectory(tm1637)
-add_subdirectory(hd44780)
-add_subdirectory(pcf8574)
+#
+# target hwmodled4x7seg for 4 x 7seg LED module using TM1637 chip
+#
+set(SRC src/lcd1602.c)
+
+add_library(hwmodlcd1602 ${SRC})
+target_include_directories(hwmodlcd1602 PUBLIC include)
+target_link_libraries(hwmodlcd1602 PUBLIC hwchd44780)
+target_link_libraries(hwmodlcd1602 PUBLIC hwmodi2clcd)
+
