@@ -18,6 +18,7 @@
 
 #include <hwchip/pcf8574.h>
 #include <hwchip/hd44780.h>
+#include <gpio/gpio_interface.h>
 
 #define PCF8574_LCD1604_RS  0b00000001
 #define PCF8574_LCD1604_RW  0b00000010
@@ -32,6 +33,23 @@ static void _send_byte(uint8_t lcddata, uint32_t delay)
   lcddata &= ~PCF8574_LCD1604_EN;
   pcf8574_send_byte(lcddata);
   hwboard_delay(delay);
+}
+
+int i2clcd_init(ioport_t i2caddr)
+{
+  if (!hwboard_gpio_init())
+    return 0;
+
+  if (!pcf8574_init(i2caddr))
+    return 0;
+
+  return 1;
+}
+
+void i2clcd_close(void)
+{
+  pcf8574_close();
+  hwboard_gpio_close();
 }
 
 void i2clcd_init_4bit(void)

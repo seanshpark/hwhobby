@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-#include <gpio/gpio_interface.h>
-
 #include <hwmodule/lcd1602.h>
-#include <hwmodule/i2clcd.h>
 
 #include <signal.h>
 

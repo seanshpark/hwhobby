@@ -160,7 +160,7 @@ int hwboard_i2c_open(ioport_t i2caddr)
   bcm2835_i2c_begin();
   bcm2835_i2c_setSlaveAddress(i2caddr);
 
-  return 0;
+  return 1;
 }
 
 void hwboard_i2c_close(void)

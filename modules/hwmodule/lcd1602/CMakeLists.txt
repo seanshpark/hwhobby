@@ -21,6 +21,6 @@ set(SRC src/lcd1602.c)
 
 add_library(hwmodlcd1602 ${SRC})
 target_include_directories(hwmodlcd1602 PUBLIC include)
-target_link_libraries(hwmodlcd1602 PUBLIC hwchd44780)
-target_link_libraries(hwmodlcd1602 PUBLIC hwmodi2clcd)
-
+target_link_libraries(hwmodlcd1602 PRIVATE hwchd44780)
+target_link_libraries(hwmodlcd1602 PRIVATE hwmodi2clcd)
+target_link_libraries(hwmodlcd1602 PUBLIC hwboardgpio)

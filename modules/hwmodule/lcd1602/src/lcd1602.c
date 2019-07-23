@@ -52,10 +52,8 @@ static void _entrymode_set(uint8_t data)
 
 int lcd1602_init(ioport_t i2caddr)
 {
-  if (!hwboard_gpio_init())
+  if (!i2clcd_init(i2caddr))
     return 0;
-
-  hwboard_i2c_open(i2caddr);
 
   // initialize lcd
   i2clcd_init_4bit();
@@ -79,8 +77,7 @@ int lcd1602_init(ioport_t i2caddr)
 
 void lcd1602_close(void)
 {
-  hwboard_i2c_close();
-  hwboard_gpio_close();
+  i2clcd_close();
 }
 
 //=============================================================================

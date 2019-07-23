@@ -21,5 +21,5 @@ set(SRC src/i2clcd.c)
 
 add_library(hwmodi2clcd ${SRC})
 target_include_directories(hwmodi2clcd PUBLIC include)
-target_link_libraries(hwmodi2clcd PUBLIC hwcpcf8574)
-target_link_libraries(hwmodi2clcd PUBLIC hwchd44780)
+target_link_libraries(hwmodi2clcd PRIVATE hwcpcf8574)
+target_link_libraries(hwmodi2clcd PRIVATE hwchd44780)
