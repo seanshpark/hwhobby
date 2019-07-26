@@ -59,7 +59,8 @@ int lcd1602_init(ioport_t i2caddr)
   i2clcd_init_4bit();
   hwboard_delay(100);
 
-  _function_set(HD44780_LCD_FUNCSET_2LINES); // 4bits, 2lines, 5x8 dot
+  _function_set(HD44780_LCD_FUNCSET_4BIT | HD44780_LCD_FUNCSET_2LINES |
+                HD44780_LCD_FUNCSET_5x8);
   hwboard_delay(100);
 
   _display_set(HD44780_LCD_DISPLAY_ON | HD44780_LCD_DISPLAY_CUR |
