@@ -20,6 +20,10 @@
 #include <hwchip/hd44780.h>
 #include <gpio/gpio_interface.h>
 
+/**
+ * @note  PCF8574_LCD1604_XX describe wire connection of PCF8574 module to
+ *        LCD1604/LCD1602 control pins
+ */
 #define PCF8574_LCD1604_RS  0b00000001
 #define PCF8574_LCD1604_RW  0b00000010
 #define PCF8574_LCD1604_EN  0b00000100
