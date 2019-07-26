@@ -21,7 +21,7 @@
 
 #include "stm32f103c8t6.h"
 
-int hwboard_gpio_init(void)
+HWRESULT hwboard_gpio_init(void)
 {
   RCC_Configuration();
   NVIC_Configuration();
@@ -30,7 +30,7 @@ int hwboard_gpio_init(void)
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
   RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
 
-  return 1;
+  return HWRESULT_SUCCESS;
 }
 
 void hwboard_gpio_close(void)

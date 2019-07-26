@@ -35,15 +35,15 @@ static void _send_byte(uint8_t lcddata, uint32_t delay)
   hwboard_delay(delay);
 }
 
-int i2clcd_init(ioport_t i2caddr)
+HWRESULT i2clcd_init(ioport_t i2caddr)
 {
-  if (!hwboard_gpio_init())
-    return 0;
+  if (hwboard_gpio_init() != HWRESULT_SUCCESS)
+    return HWRESULT_FAILED;
 
-  if (!pcf8574_init(i2caddr))
-    return 0;
+  if (pcf8574_init(i2caddr) != HWRESULT_SUCCESS)
+    return HWRESULT_FAILED;
 
-  return 1;
+  return HWRESULT_SUCCESS;
 }
 
 void i2clcd_close(void)

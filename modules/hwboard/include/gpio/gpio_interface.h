@@ -26,7 +26,7 @@ extern "C" {
 /**
  * @brief Initialize gpio
  */
-int hwboard_gpio_init(void);
+HWRESULT hwboard_gpio_init(void);
 
 /**
  * @brief Close gpio
@@ -76,7 +76,7 @@ hwusec_t hwboard_time(void);
 //  - need to test with STM32F103
 //
 
-int hwboard_i2c_open(ioport_t i2caddr);
+HWRESULT hwboard_i2c_open(ioport_t i2caddr);
 void hwboard_i2c_close(void);
 void hwboard_i2c_send_byte(uint8_t one);
 

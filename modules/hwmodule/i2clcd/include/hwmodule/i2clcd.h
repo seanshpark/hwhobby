@@ -31,7 +31,7 @@ extern "C" {
  *         Low 4 bits are used as control signals
  */
 
-int i2clcd_init(ioport_t i2caddr);
+HWRESULT i2clcd_init(ioport_t i2caddr);
 void i2clcd_close(void);
 
 void i2clcd_init_4bit(void);

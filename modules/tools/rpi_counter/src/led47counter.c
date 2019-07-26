@@ -48,7 +48,7 @@ void fill_data(LED4X7SEG_t* data, int value)
 
 int hwhobby_counter(void)
 {
-  if (!led4x7seg_init(0, gpio_clock, 0, gpio_dataio))
+  if (led4x7seg_init(0, gpio_clock, 0, gpio_dataio) != HWRESULT_SUCCESS)
     return -1;
 
   uint8_t brightness = LED4x7SEG_BR_04;

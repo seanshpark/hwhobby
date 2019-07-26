@@ -24,12 +24,12 @@
  * @note   Configuring output P0~P7 is user defined
  */
 
-int pcf8574_init(ioport_t i2caddr)
+HWRESULT pcf8574_init(ioport_t i2caddr)
 {
-  if (!hwboard_i2c_open(i2caddr))
-    return 0;
+  if (hwboard_i2c_open(i2caddr) != HWRESULT_SUCCESS)
+    return HWRESULT_FAILED;
 
-  return 1;
+  return HWRESULT_SUCCESS;
 }
 
 void pcf8574_close(void)

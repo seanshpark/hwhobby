@@ -50,10 +50,10 @@ static void _entrymode_set(uint8_t data)
 
 //=============================================================================
 
-int lcd1602_init(ioport_t i2caddr)
+HWRESULT lcd1602_init(ioport_t i2caddr)
 {
-  if (!i2clcd_init(i2caddr))
-    return 0;
+  if (i2clcd_init(i2caddr) != HWRESULT_SUCCESS)
+    return HWRESULT_FAILED;
 
   // initialize lcd
   i2clcd_init_4bit();
@@ -73,7 +73,7 @@ int lcd1602_init(ioport_t i2caddr)
   lcd1602_clear();
   hwboard_delay(100);
 
-  return 1;
+  return HWRESULT_SUCCESS;
 }
 
 void lcd1602_close(void)

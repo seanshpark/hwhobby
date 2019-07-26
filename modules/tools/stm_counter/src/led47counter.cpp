@@ -45,7 +45,8 @@ void fill_data(LED4X7SEG_t* data, int value)
 
 int hwhobby_counter(void)
 {
-  if (!led4x7seg_init(STM32F103_PORT_C, gpio_clock, STM32F103_PORT_C, gpio_dataio))
+  if (led4x7seg_init(STM32F103_PORT_C, gpio_clock, STM32F103_PORT_C, gpio_dataio) !=
+      HWRESULT_SUCCESS)
     return -1;
 
   hwboard_gpio_cfg(STM32F103_PORT_C, gpio_clock, HWBOARD_GPIO_PUD_UP, HWBOARD_GPIO_FSEL_OUT);

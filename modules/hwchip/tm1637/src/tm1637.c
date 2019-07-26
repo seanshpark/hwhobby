@@ -80,10 +80,10 @@ void skip_ack(void)
   hwboard_delay(CLOCK_DELAY);
 }
 
-int tm1637_init(ioport_t clock_port, ioport_t clock_pin, ioport_t data_port, ioport_t data_pin)
+HWRESULT tm1637_init(ioport_t clock_port, ioport_t clock_pin, ioport_t data_port, ioport_t data_pin)
 {
-  if (!hwboard_gpio_init())
-    return 0;
+  if (hwboard_gpio_init() != HWRESULT_SUCCESS)
+    return HWRESULT_FAILED;
 
   _port_clock = clock_port;
   _pin_clock = clock_pin;
@@ -97,7 +97,7 @@ int tm1637_init(ioport_t clock_port, ioport_t clock_pin, ioport_t data_port, iop
   hwboard_gpio_clr(_port_clock, _pin_clock);
   hwboard_gpio_clr(_port_data, _pin_data);
   
-  return 1;
+  return HWRESULT_SUCCESS;
 }
 
 void tm1637_close(void)

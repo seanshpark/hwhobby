@@ -39,4 +39,12 @@ typedef unsigned long long uint64_t;
 typedef uint16_t ioport_t;
 typedef uint64_t hwusec_t;
 
+// device result of commands, init and others with return
+typedef enum {
+
+  HWRESULT_FAILED = 0,
+  HWRESULT_SUCCESS = 1
+
+} HWRESULT;
+
 #endif // __HWHOBBY_STANDARD_H__

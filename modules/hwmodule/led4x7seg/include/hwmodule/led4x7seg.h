@@ -23,7 +23,8 @@
 extern "C" {
 #endif
 
-int led4x7seg_init(ioport_t clock_port, ioport_t clock_pin, ioport_t data_port, ioport_t data_pin);
+HWRESULT led4x7seg_init(ioport_t clock_port, ioport_t clock_pin, ioport_t data_port,
+                        ioport_t data_pin);
 void led4x7seg_close(void);
 
 typedef struct tag_LED4X7SEG

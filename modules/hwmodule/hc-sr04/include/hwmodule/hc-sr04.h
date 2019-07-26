@@ -23,7 +23,7 @@
 extern "C" {
 #endif
 
-int hcsr04_init(ioport_t trig_port, ioport_t trig_pin, ioport_t echo_port, ioport_t echo_pin);
+HWRESULT hcsr04_init(ioport_t trig_port, ioport_t trig_pin, ioport_t echo_port, ioport_t echo_pin);
 void hcsr04_close(void);
 
 int hcsr04_measure_time(void);

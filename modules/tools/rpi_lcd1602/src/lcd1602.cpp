@@ -32,7 +32,7 @@ void signal_handler(int sig)
 
 int hwhobby_lcd1602(void)
 {
-  if (!lcd1602_init(I2C_ADDR))
+  if (lcd1602_init(I2C_ADDR) != HWRESULT_SUCCESS)
     return -1;
 
   lcd1602_moverc(0, 1);

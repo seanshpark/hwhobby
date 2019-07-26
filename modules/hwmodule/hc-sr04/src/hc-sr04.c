@@ -23,9 +23,9 @@ static ioport_t _port_echo = 0;
 static ioport_t _pin_trig = 0;
 static ioport_t _pin_echo = 0;
 
-int hcsr04_init(ioport_t trig_port, ioport_t trig_pin, ioport_t echo_port, ioport_t echo_pin)
+HWRESULT hcsr04_init(ioport_t trig_port, ioport_t trig_pin, ioport_t echo_port, ioport_t echo_pin)
 {
-  if (!hwboard_gpio_init())
+  if (hwboard_gpio_init() != HWRESULT_SUCCESS)
     return 0;
 
   _port_trig = trig_port;
@@ -40,7 +40,7 @@ int hcsr04_init(ioport_t trig_port, ioport_t trig_pin, ioport_t echo_port, iopor
 
   hwboard_gpio_clr(_port_trig, _pin_trig);
 
-  return 1;
+  return HWRESULT_SUCCESS;
 }
 
 void hcsr04_close(void)

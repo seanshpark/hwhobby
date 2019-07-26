@@ -21,13 +21,13 @@
 #include <time.h>
 #include <unistd.h> // for usleep
 
-int hwboard_gpio_init(void)
+HWRESULT hwboard_gpio_init(void)
 {
-  if (!bcm2835_init())
+  if (bcm2835_init() != HWRESULT_SUCCESS)
   {
-    return 0;
+    return HWRESULT_FAILED;
   }
-  return 1;
+  return HWRESULT_SUCCESS;
 }
 
 void hwboard_gpio_close(void)
@@ -155,12 +155,12 @@ hwusec_t hwboard_time(void)
   return time_val;
 }
 
-int hwboard_i2c_open(ioport_t i2caddr)
+HWRESULT hwboard_i2c_open(ioport_t i2caddr)
 {
   bcm2835_i2c_begin();
   bcm2835_i2c_setSlaveAddress(i2caddr);
 
-  return 1;
+  return HWRESULT_SUCCESS;
 }
 
 void hwboard_i2c_close(void)

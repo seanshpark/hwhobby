@@ -21,12 +21,13 @@
 /**
  * @note led4x7seg uses 2 pins for clock and data 
  */
-int led4x7seg_init(ioport_t clock_port, ioport_t clock_pin, ioport_t data_port, ioport_t data_pin)
+HWRESULT led4x7seg_init(ioport_t clock_port, ioport_t clock_pin, ioport_t data_port,
+                        ioport_t data_pin)
 {
-  if (!tm1637_init(clock_port, clock_pin, data_port, data_pin))
-    return 0;
+  if (tm1637_init(clock_port, clock_pin, data_port, data_pin) != HWRESULT_SUCCESS)
+    return HWRESULT_FAILED;
 
-  return 1;
+  return HWRESULT_SUCCESS;
 }
 
 void led4x7seg_close(void)

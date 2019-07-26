@@ -36,7 +36,7 @@ void signal_handler(int sig)
 
 int hwhobby_counter(void)
 {
-  if (!hcsr04_init(0, gpio_trig, 0, gpio_echo))
+  if (hcsr04_init(0, gpio_trig, 0, gpio_echo) != HWRESULT_SUCCESS)
     return -1;
 
   for (int i = 0; i < 9999; i++)

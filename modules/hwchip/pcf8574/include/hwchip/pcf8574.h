@@ -23,7 +23,7 @@
 extern "C" {
 #endif
 
-int pcf8574_init(ioport_t i2caddr);
+HWRESULT pcf8574_init(ioport_t i2caddr);
 void pcf8574_close(void);
 void pcf8574_send_byte(uint8_t one);
 

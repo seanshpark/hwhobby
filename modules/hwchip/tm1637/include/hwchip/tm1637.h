@@ -23,7 +23,8 @@
 extern "C" {
 #endif
 
-int tm1637_init(ioport_t clock_port, ioport_t clock_pin, ioport_t data_port, ioport_t data_pin);
+HWRESULT tm1637_init(ioport_t clock_port, ioport_t clock_pin, ioport_t data_port,
+                     ioport_t data_pin);
 void tm1637_close(void);
 
 // TM1637 Comamnd mode
