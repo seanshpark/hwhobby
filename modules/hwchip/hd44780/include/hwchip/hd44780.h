@@ -41,13 +41,18 @@ extern "C" {
 #define HD44780_LCD_FUNCSET_5x8       0b00000000
 
 // HD44780_LCD_CMD_CURSOR
-#define HD44780_LCD_CURSOR_SHIFT      0b00001000  // display shift vs cursor move
-#define HD44780_LCD_CURSOR_RIGHT      0b00000100  // shift to the right vs left
+#define HD44780_LCD_CURSOR_SHIFT_DIS  0b00001000  // display shift
+#define HD44780_LCD_CURSOR_SHIFT_CUR  0b00000000  // cursor move
+#define HD44780_LCD_CURSOR_RIGHT      0b00000100  // shift to the right
+#define HD44780_LCD_CURSOR_LEFT       0b00000000  // shift to the left
 
 // HD44780_LCD_CMD_DISPLAY
-#define HD44780_LCD_DISPLAY_ON        0b00000100  // vs display off
-#define HD44780_LCD_DISPLAY_CUR       0b00000010  // vs cursor off
-#define HD44780_LCD_DISPLAY_BLINK     0b00000001  // cs blink off
+#define HD44780_LCD_DISPLAY_ON        0b00000100
+#define HD44780_LCD_DISPLAY_OFF       0b00000000
+#define HD44780_LCD_DISPLAY_CUR       0b00000010
+#define HD44780_LCD_DISPLAY_CUR_OFF   0b00000000
+#define HD44780_LCD_DISPLAY_BLINK     0b00000001
+#define HD44780_LCD_DISPLAY_BLINK_OFF 0b00000000
 
 // HD44780_LCD_CMD_ENTRY
 #define HD44780_LCD_ENTRY_INC         0b00000010  // increment vs decrement

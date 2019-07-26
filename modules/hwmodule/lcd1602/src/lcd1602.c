@@ -63,6 +63,9 @@ HWRESULT lcd1602_init(ioport_t i2caddr)
                 HD44780_LCD_FUNCSET_5x8);
   hwboard_delay(100);
 
+  _cursor_set(HD44780_LCD_CURSOR_SHIFT_CUR | HD44780_LCD_CURSOR_RIGHT);
+  hwboard_delay(100);
+
   _display_set(HD44780_LCD_DISPLAY_ON | HD44780_LCD_DISPLAY_CUR |
                HD44780_LCD_DISPLAY_BLINK);
   hwboard_delay(100);
