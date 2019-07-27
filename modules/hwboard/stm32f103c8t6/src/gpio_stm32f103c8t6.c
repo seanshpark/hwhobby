@@ -38,7 +38,7 @@ void hwboard_gpio_close(void)
   // nothing to do
 }
 
-GPIO_TypeDef* hwport_from_port(ioport_t port)
+static GPIO_TypeDef* _hwport_from_port(ioport_t port)
 {
   static GPIO_TypeDef* hwport_table[] = {
     GPIOA, GPIOB, GPIOC
@@ -53,7 +53,7 @@ GPIO_TypeDef* hwport_from_port(ioport_t port)
 /**
  * @brief return STM32F103 H/W pin code from logical pin number (0 ~ )
  */
-ioport_t hwpin_from_pin(ioport_t pin)
+static  ioport_t _hwpin_from_pin(ioport_t pin)
 {
   static const ioport_t hwpin_table[] = {
     GPIO_Pin_0, GPIO_Pin_1, GPIO_Pin_2, GPIO_Pin_3,
@@ -71,26 +71,26 @@ ioport_t hwpin_from_pin(ioport_t pin)
 
 void hwboard_gpio_set(ioport_t port, ioport_t pin)
 {
-  GPIO_TypeDef* hwport = hwport_from_port(port);
-  ioport_t hwpin = hwpin_from_pin(pin);
+  GPIO_TypeDef* hwport = _hwport_from_port(port);
+  ioport_t hwpin = _hwpin_from_pin(pin);
 
   GPIO_SetBits(hwport, hwpin);
 }
 
 void hwboard_gpio_clr(ioport_t port, ioport_t pin)
 {
-  GPIO_TypeDef* hwport = hwport_from_port(port);
-  ioport_t hwpin = hwpin_from_pin(pin);
+  GPIO_TypeDef* hwport = _hwport_from_port(port);
+  ioport_t hwpin = _hwpin_from_pin(pin);
 
   GPIO_ResetBits(hwport, hwpin);
 }
 
 void hwboard_gpio_cfg(ioport_t port, ioport_t pin, uint8_t pudin, uint8_t fselin)
 {
-  GPIO_TypeDef* hwport = hwport_from_port(port);
+  GPIO_TypeDef* hwport = _hwport_from_port(port);
   GPIOMode_TypeDef mode = GPIO_Mode_AIN;
   GPIO_InitTypeDef GPIO_InitStructure;
-  ioport_t hwpin = hwpin_from_pin(pin);
+  ioport_t hwpin = _hwpin_from_pin(pin);
 
   switch (pudin)
   {
@@ -130,4 +130,135 @@ void hwboard_delay_ms(int msec)
     hwboard_delay(msec);
     loop--;
   }
+}
+
+#ifdef  DEBUG
+void assert_failed(u8* file, u32 line)
+{
+  while (1)
+  {
+    hwboard_gpio_set(STM32F103_PORT_C, 13);
+    hwboard_delay(100 * 1000);
+    hwboard_gpio_clr(STM32F103_PORT_C, 13);
+    hwboard_delay(100 * 1000);
+  }
+}
+#endif
+
+//
+// I2C
+//
+static I2C_TypeDef* _current_i2c_num; // I2C-1, I2C-2
+static uint8_t _current_i2c_addr;
+
+static void _i2c_start()
+{
+  while (I2C_GetFlagStatus(_current_i2c_num, I2C_FLAG_BUSY))
+  {
+  }
+
+  I2C_GenerateSTART(_current_i2c_num, ENABLE);
+
+  while (!I2C_CheckEvent(_current_i2c_num, I2C_EVENT_MASTER_MODE_SELECT))
+  {
+  }
+}
+
+static void _i2c_addr(uint8_t direction)
+{
+  I2C_Send7bitAddress(_current_i2c_num, _current_i2c_addr, direction);
+
+  if (direction == I2C_Direction_Transmitter)
+  {
+    while (!I2C_CheckEvent(_current_i2c_num, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED))
+    {
+    }
+  }
+  else if (direction == I2C_Direction_Receiver)
+  {
+    while (!I2C_CheckEvent(_current_i2c_num, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED))
+    {
+    }
+  }
+}
+
+static void _i2c_send(uint8_t data)
+{
+  I2C_SendData(_current_i2c_num, data);
+
+  while (!I2C_CheckEvent(_current_i2c_num, I2C_EVENT_MASTER_BYTE_TRANSMITTED))
+  {
+  }
+}
+
+static void _i2c_stop()
+{
+  I2C_GenerateSTOP(_current_i2c_num, ENABLE);
+
+  while (I2C_GetFlagStatus(_current_i2c_num, I2C_FLAG_STOPF))
+  {
+  }
+}
+
+static I2C_TypeDef *_hwi2c_from_i2c(ioport_t num)
+{
+  static I2C_TypeDef* hwi2c_table[] = {
+    I2C1, I2C2
+  };
+  static const int count = 2;
+  if (num >= count)
+    num = 0;
+
+  return hwi2c_table[num];
+}
+
+HWRESULT hwboard_i2c_open(HW_I2C_INIT_t* pi2cinit)
+{
+  GPIO_InitTypeDef GPIO_InitStruct;
+  I2C_InitTypeDef I2C_InitStruct;
+
+  GPIO_TypeDef* hwport = _hwport_from_port(pi2cinit->i2cport);
+  ioport_t hwpin_scl = _hwpin_from_pin(pi2cinit->i2cpin_scl);
+  ioport_t hwpin_sda = _hwpin_from_pin(pi2cinit->i2cpin_sda);
+  I2C_TypeDef *i2cnum = _hwi2c_from_i2c(pi2cinit->i2c_num);
+
+  switch (pi2cinit->i2c_num)
+  {
+  case STM32F103_I2C_1:
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
+    break;
+  case STM32F103_I2C_2:
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);
+    break;
+  }
+
+  GPIO_InitStruct.GPIO_Pin = hwpin_scl | hwpin_sda;
+  GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF_OD;
+  GPIO_InitStruct.GPIO_Speed = GPIO_Speed_2MHz;
+  GPIO_Init(hwport, &GPIO_InitStruct);
+
+  I2C_StructInit(&I2C_InitStruct);
+  I2C_InitStruct.I2C_ClockSpeed = 100000;
+  I2C_InitStruct.I2C_OwnAddress1 = 0x10;
+
+  I2C_Init(i2cnum, &I2C_InitStruct);
+  I2C_Cmd(i2cnum, ENABLE);
+
+  _current_i2c_num = i2cnum;
+  _current_i2c_addr = (uint8_t)(pi2cinit->i2caddr) << 1;
+
+  return HWRESULT_SUCCESS;
+}
+
+void hwboard_i2c_close(void)
+{
+  // nothing to do
+}
+
+void hwboard_i2c_send_byte(uint8_t data)
+{
+  _i2c_start();
+  _i2c_addr(I2C_Direction_Transmitter);
+  _i2c_send(data);
+  _i2c_stop();
 }

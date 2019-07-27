@@ -23,7 +23,7 @@
 extern "C" {
 #endif
 
-HWRESULT lcd1602_init(ioport_t i2caddr);
+HWRESULT lcd1602_init(HW_I2C_INIT_t* pi2cinit);
 void lcd1602_close(void);
 
 void lcd1602_home(void);

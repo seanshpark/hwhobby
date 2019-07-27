@@ -50,9 +50,9 @@ static void _entrymode_set(uint8_t data)
 
 //=============================================================================
 
-HWRESULT lcd1602_init(ioport_t i2caddr)
+HWRESULT lcd1602_init(HW_I2C_INIT_t* pi2cinit)
 {
-  if (i2clcd_init(i2caddr) != HWRESULT_SUCCESS)
+  if (i2clcd_init(pi2cinit) != HWRESULT_SUCCESS)
     return HWRESULT_FAILED;
 
   // initialize lcd

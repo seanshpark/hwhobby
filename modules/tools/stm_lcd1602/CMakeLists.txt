@@ -15,18 +15,20 @@
 #
 
 #
-# tools depending on the target board
+# target lcd1602 with STM32F103
 #
+set(SRC src/lcd1602.c)
 
-if("${TARGET_BOARD}" STREQUAL "rpi")
-  add_subdirectory(rpi_counter)
-  add_subdirectory(rpi_ultrasonic)
-  add_subdirectory(rpi_lcd1602)
-endif()
+set(CMAKE_EXE_LINKER_FLAGS "${STM32F103_LINKER_FLAGS}")
 
-if("${TARGET_BOARD}" STREQUAL "stm32f103c8t6")
-  add_subdirectory(stm_blinker)
-  add_subdirectory(stm_blinker2)
-  add_subdirectory(stm_counter)
-  add_subdirectory(stm_lcd1602)
-endif()
+add_executable(stm_lcd1602 ${SRC})
+target_link_libraries(stm_lcd1602 hwmodlcd1602)
+
+# convert elf file to binary file
+add_custom_command(TARGET stm_lcd1602
+                   POST_BUILD
+                   COMMAND ${CMAKE_OBJCOPY} -O binary 
+                      ${CMAKE_CURRENT_BINARY_DIR}/stm_lcd1602
+                      ${CMAKE_CURRENT_BINARY_DIR}/stm_lcd1602.bin
+                   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+)

@@ -39,12 +39,12 @@ static void _send_byte(uint8_t lcddata, uint32_t delay)
   hwboard_delay(delay);
 }
 
-HWRESULT i2clcd_init(ioport_t i2caddr)
+HWRESULT i2clcd_init(HW_I2C_INIT_t* pi2cinit)
 {
   if (hwboard_gpio_init() != HWRESULT_SUCCESS)
     return HWRESULT_FAILED;
 
-  if (pcf8574_init(i2caddr) != HWRESULT_SUCCESS)
+  if (pcf8574_init(pi2cinit) != HWRESULT_SUCCESS)
     return HWRESULT_FAILED;
 
   return HWRESULT_SUCCESS;
@@ -84,7 +84,7 @@ void i2clcd_send_ctrl(uint8_t data)
   uint8_t lcddata;
 
   // bit 7~4
-  lcddata = data & 0xf0 | PCF8574_LCD1604_BL;
+  lcddata = (data & 0xf0) | PCF8574_LCD1604_BL;
   _send_byte(lcddata, 10);
 
   // bit 3~0

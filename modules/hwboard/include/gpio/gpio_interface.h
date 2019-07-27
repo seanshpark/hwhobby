@@ -76,9 +76,9 @@ hwusec_t hwboard_time(void);
 //  - need to test with STM32F103
 //
 
-HWRESULT hwboard_i2c_open(ioport_t i2caddr);
+HWRESULT hwboard_i2c_open(HW_I2C_INIT_t* pi2cinit);
 void hwboard_i2c_close(void);
-void hwboard_i2c_send_byte(uint8_t one);
+void hwboard_i2c_send_byte(uint8_t data);
 
 #ifdef __cplusplus
 }

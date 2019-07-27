@@ -47,4 +47,19 @@ typedef enum {
 
 } HWRESULT;
 
+//
+// I2C initialization structure
+//
+typedef struct _HW_I2C_INIT_t
+{
+  ioport_t i2c_num; // i2c number, 0 start
+
+  ioport_t i2cport; // port for i2c: assume port should be the same
+  ioport_t i2cpin_scl; // pin for clock
+  ioport_t i2cpin_sda; // pin for data
+
+  ioport_t i2caddr; // slave addr
+
+} HW_I2C_INIT_t;
+
 #endif // __HWHOBBY_STANDARD_H__

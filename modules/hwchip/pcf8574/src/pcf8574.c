@@ -24,9 +24,9 @@
  * @note   Configuring output P0~P7 is user defined
  */
 
-HWRESULT pcf8574_init(ioport_t i2caddr)
+HWRESULT pcf8574_init(HW_I2C_INIT_t* pi2cinit)
 {
-  if (hwboard_i2c_open(i2caddr) != HWRESULT_SUCCESS)
+  if (hwboard_i2c_open(pi2cinit) != HWRESULT_SUCCESS)
     return HWRESULT_FAILED;
 
   return HWRESULT_SUCCESS;

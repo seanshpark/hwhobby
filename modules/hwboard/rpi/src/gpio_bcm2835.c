@@ -155,10 +155,10 @@ hwusec_t hwboard_time(void)
   return time_val;
 }
 
-HWRESULT hwboard_i2c_open(ioport_t i2caddr)
+HWRESULT hwboard_i2c_open(HW_I2C_INIT_t* pi2cinit)
 {
   bcm2835_i2c_begin();
-  bcm2835_i2c_setSlaveAddress(i2caddr);
+  bcm2835_i2c_setSlaveAddress(pi2cinit->i2caddr);
 
   return HWRESULT_SUCCESS;
 }
@@ -168,9 +168,9 @@ void hwboard_i2c_close(void)
   bcm2835_i2c_end();
 }
 
-void hwboard_i2c_send_byte(uint8_t one)
+void hwboard_i2c_send_byte(uint8_t data)
 {
   char buf[1];
-  buf[0] = (char)one;
+  buf[0] = (char)data;
   bcm2835_i2c_write(buf, 1);
 }
