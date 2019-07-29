@@ -23,8 +23,7 @@
 extern "C" {
 #endif
 
-HWRESULT tm1637_init(ioport_t clock_port, ioport_t clock_pin, ioport_t data_port,
-                     ioport_t data_pin);
+HWRESULT tm1637_init(HW_GPIO_t* gpio_clock, HW_GPIO_t* gpio_data);
 void tm1637_close(void);
 
 // TM1637 Comamnd mode

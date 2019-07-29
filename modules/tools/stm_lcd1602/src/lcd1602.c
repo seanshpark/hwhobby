@@ -24,6 +24,8 @@
 #define I2C_ADDR_YELLOW 0x27            // my yellow backlight LCD is 0x27
 #define I2C_ADDR        I2C_ADDR_YELLOW
 
+static HW_GPIO_t _gpio_led = { STM32F103_PORT_C, 13 };
+
 HWRESULT hwhobby_lcd1602_init(void)
 {
   HW_I2C_INIT_t i2cinit;
@@ -45,7 +47,7 @@ HWRESULT hwhobby_lcd1602_init(void)
 
 void hwhobby_show(void)
 {
-  hwboard_gpio_set(STM32F103_PORT_C, 13);
+  hwboard_gpio_set(&_gpio_led);
   lcd1602_moverc(0, 1);
   lcd1602_puts("Hello !!!");
   lcd1602_moverc(1, 3);
@@ -53,7 +55,7 @@ void hwhobby_show(void)
   hwboard_delay(2500 * 1000);
   lcd1602_clear();
 
-  hwboard_gpio_clr(STM32F103_PORT_C, 13);
+  hwboard_gpio_clr(&_gpio_led);
   lcd1602_moverc(0, 1);
   lcd1602_puts("LCD1602 with");
   lcd1602_moverc(1, 5);
@@ -64,16 +66,23 @@ void hwhobby_show(void)
 
 void hwhobby_blink(uint32_t delay)
 {
-  hwboard_gpio_set(STM32F103_PORT_C, 13);
+  hwboard_gpio_set(&_gpio_led);
   hwboard_delay(delay * 1000);
-  hwboard_gpio_clr(STM32F103_PORT_C, 13);
+  hwboard_gpio_clr(&_gpio_led);
   hwboard_delay(delay * 1000);
 }
 
 int main()
 {
+  HW_GPIO_CFG_t gpiocfg_led = {
+    _gpio_led.port,
+    _gpio_led.pin,
+    HWBOARD_GPIO_PUD_UP,
+    HWBOARD_GPIO_FSEL_OUT
+  };
+
   hwboard_gpio_init();
-  hwboard_gpio_cfg(STM32F103_PORT_C, 13, HWBOARD_GPIO_PUD_UP, HWBOARD_GPIO_FSEL_OUT);
+  hwboard_gpio_cfg(&gpiocfg_led);
 
   hwhobby_blink(500);
   hwhobby_blink(500);

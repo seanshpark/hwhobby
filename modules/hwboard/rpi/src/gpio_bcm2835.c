@@ -78,25 +78,25 @@ static RPiGPIOPin hwpin_from_gpio(ioport_t gpio)
   return hwpin_table[gpio];
 }
 
-void hwboard_gpio_set(ioport_t port, ioport_t gpio)
+void hwboard_gpio_set(HW_GPIO_t* gpio)
 {
-  RPiGPIOPin hwpin = hwpin_from_gpio(gpio);
+  RPiGPIOPin hwpin = hwpin_from_gpio(gpio->pin);
 
   if (hwpin != RPI_V2_GPIO_P1_XX)
     bcm2835_gpio_set(hwpin);
 }
 
-void hwboard_gpio_clr(ioport_t port, ioport_t gpio)
+void hwboard_gpio_clr(HW_GPIO_t* gpio)
 {
-  RPiGPIOPin hwpin = hwpin_from_gpio(gpio);
+  RPiGPIOPin hwpin = hwpin_from_gpio(gpio->pin);
 
   if (hwpin != RPI_V2_GPIO_P1_XX)
     bcm2835_gpio_clr(hwpin);
 }
 
-ioport_t hwboard_gpio_get(ioport_t port, ioport_t gpio)
+ioport_t hwboard_gpio_get(HW_GPIO_t* gpio)
 {
-  RPiGPIOPin hwpin = hwpin_from_gpio(gpio);
+  RPiGPIOPin hwpin = hwpin_from_gpio(gpio->pin);
 
   if (hwpin != RPI_V2_GPIO_P1_XX)
     return bcm2835_gpio_lev(hwpin);
@@ -104,16 +104,16 @@ ioport_t hwboard_gpio_get(ioport_t port, ioport_t gpio)
   return 0;
 }
 
-void hwboard_gpio_cfg(ioport_t port, ioport_t gpio, uint8_t pudin, uint8_t fselin)
+void hwboard_gpio_cfg(HW_GPIO_CFG_t* gpiocfg)
 {
-  RPiGPIOPin hwpin = hwpin_from_gpio(gpio);
+  RPiGPIOPin hwpin = hwpin_from_gpio(gpiocfg->pin);
   bcm2835PUDControl pud = BCM2835_GPIO_PUD_OFF;
   bcm2835FunctionSelect fsel = BCM2835_GPIO_FSEL_INPT;
 
   if (hwpin == RPI_V2_GPIO_P1_XX)
     return;
   
-  switch (pudin)
+  switch (gpiocfg->pud)
   {
   case HWBOARD_GPIO_PUD_OFF: pud = BCM2835_GPIO_PUD_OFF; break;
   case HWBOARD_GPIO_PUD_DN: pud = BCM2835_GPIO_PUD_DOWN; break;
@@ -121,7 +121,7 @@ void hwboard_gpio_cfg(ioport_t port, ioport_t gpio, uint8_t pudin, uint8_t fseli
   }
   bcm2835_gpio_set_pud(hwpin, pud);
 
-  switch (fselin)
+  switch (gpiocfg->fsel)
   {
   case HWBOARD_GPIO_FSEL_INP: fsel = BCM2835_GPIO_FSEL_INPT; break;
   case HWBOARD_GPIO_FSEL_OUT: fsel = BCM2835_GPIO_FSEL_OUTP; break;

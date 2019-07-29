@@ -21,10 +21,9 @@
 /**
  * @note led4x7seg uses 2 pins for clock and data 
  */
-HWRESULT led4x7seg_init(ioport_t clock_port, ioport_t clock_pin, ioport_t data_port,
-                        ioport_t data_pin)
+HWRESULT led4x7seg_init(HW_GPIO_t* gpio_clock, HW_GPIO_t* gpio_data)
 {
-  if (tm1637_init(clock_port, clock_pin, data_port, data_pin) != HWRESULT_SUCCESS)
+  if (tm1637_init(gpio_clock, gpio_data) != HWRESULT_SUCCESS)
     return HWRESULT_FAILED;
 
   return HWRESULT_SUCCESS;

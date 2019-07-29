@@ -19,8 +19,8 @@
 
 #include <hwmodule/led4x7seg.h>
 
-ioport_t gpio_clock  = 14; // pin 14
-ioport_t gpio_dataio = 13; // pin 13
+static HW_GPIO_t _gpio_clock = { STM32F103_PORT_C, 14 }; // pin 14
+static HW_GPIO_t _gpio_data = { STM32F103_PORT_C, 13 }; // pin 13
 
 void fill_data(LED4X7SEG_t* data, int value)
 {
@@ -45,12 +45,24 @@ void fill_data(LED4X7SEG_t* data, int value)
 
 int hwhobby_counter(void)
 {
-  if (led4x7seg_init(STM32F103_PORT_C, gpio_clock, STM32F103_PORT_C, gpio_dataio) !=
-      HWRESULT_SUCCESS)
+  if (led4x7seg_init(&_gpio_clock, &_gpio_data) != HWRESULT_SUCCESS)
     return -1;
 
-  hwboard_gpio_cfg(STM32F103_PORT_C, gpio_clock, HWBOARD_GPIO_PUD_UP, HWBOARD_GPIO_FSEL_OUT);
-  hwboard_gpio_cfg(STM32F103_PORT_C, gpio_dataio, HWBOARD_GPIO_PUD_UP, HWBOARD_GPIO_FSEL_OUT);
+  HW_GPIO_CFG_t gpiocfg_clock = {
+    _gpio_clock.port,
+    _gpio_clock.pin,
+    HWBOARD_GPIO_PUD_UP,
+    HWBOARD_GPIO_FSEL_OUT
+  };
+  HW_GPIO_CFG_t gpiocfg_data = {
+    _gpio_data.port,
+    _gpio_data.pin,
+    HWBOARD_GPIO_PUD_UP,
+    HWBOARD_GPIO_FSEL_OUT
+  };
+
+  hwboard_gpio_cfg(&gpiocfg_clock);
+  hwboard_gpio_cfg(&gpiocfg_data);
 
   uint8_t brightness = 3;
 
