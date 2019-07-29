@@ -69,37 +69,37 @@ static  ioport_t _hwpin_from_pin(ioport_t pin)
   return hwpin_table[pin];
 }
 
-void hwboard_gpio_set(ioport_t port, ioport_t pin)
+void hwboard_gpio_set(HW_GPIO_t* gpio)
 {
-  GPIO_TypeDef* hwport = _hwport_from_port(port);
-  ioport_t hwpin = _hwpin_from_pin(pin);
+  GPIO_TypeDef* hwport = _hwport_from_port(gpio->port);
+  ioport_t hwpin = _hwpin_from_pin(gpio->pin);
 
   GPIO_SetBits(hwport, hwpin);
 }
 
-void hwboard_gpio_clr(ioport_t port, ioport_t pin)
+void hwboard_gpio_clr(HW_GPIO_t* gpio)
 {
-  GPIO_TypeDef* hwport = _hwport_from_port(port);
-  ioport_t hwpin = _hwpin_from_pin(pin);
+  GPIO_TypeDef* hwport = _hwport_from_port(gpio->port);
+  ioport_t hwpin = _hwpin_from_pin(gpio->pin);
 
   GPIO_ResetBits(hwport, hwpin);
 }
 
-void hwboard_gpio_cfg(ioport_t port, ioport_t pin, uint8_t pudin, uint8_t fselin)
+void hwboard_gpio_cfg(HW_GPIO_CFG_t* gpiocfg)
 {
-  GPIO_TypeDef* hwport = _hwport_from_port(port);
+  GPIO_TypeDef* hwport = _hwport_from_port(gpiocfg->port);
   GPIOMode_TypeDef mode = GPIO_Mode_AIN;
   GPIO_InitTypeDef GPIO_InitStructure;
-  ioport_t hwpin = _hwpin_from_pin(pin);
+  ioport_t hwpin = _hwpin_from_pin(gpiocfg->pin);
 
-  switch (pudin)
+  switch (gpiocfg->pud)
   {
   case HWBOARD_GPIO_PUD_OFF: break;
   case HWBOARD_GPIO_PUD_DN: break;
   case HWBOARD_GPIO_PUD_UP: break;
   }
 
-  switch (fselin)
+  switch (gpiocfg->fsel)
   {
   case HWBOARD_GPIO_FSEL_INP: mode = GPIO_Mode_IN_FLOATING; break;
   case HWBOARD_GPIO_FSEL_OUT: mode = GPIO_Mode_Out_PP; break;

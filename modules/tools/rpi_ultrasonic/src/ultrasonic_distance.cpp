@@ -23,8 +23,8 @@
 #include <unistd.h>
 
 // RPi
-ioport_t gpio_trig = 23; // GPIO23
-ioport_t gpio_echo = 24; // GPIO24
+static HW_GPIO_t _gpio_trig = { 0, 23 }; // GPIO23
+static HW_GPIO_t _gpio_echo = { 0, 24 }; // GPIO24
 
 volatile sig_atomic_t quit;
 
@@ -36,7 +36,7 @@ void signal_handler(int sig)
 
 int hwhobby_counter(void)
 {
-  if (hcsr04_init(0, gpio_trig, 0, gpio_echo) != HWRESULT_SUCCESS)
+  if (hcsr04_init(&_gpio_trig, &_gpio_echo) != HWRESULT_SUCCESS)
     return -1;
 
   for (int i = 0; i < 9999; i++)

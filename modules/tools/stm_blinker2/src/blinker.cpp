@@ -19,21 +19,33 @@
 
 int main(void)
 {
+  HW_GPIO_t gpio_led = {
+    STM32F103_PORT_C,
+    13
+  };
+
+  HW_GPIO_CFG_t gpiocfg_led = {
+    STM32F103_PORT_C,
+    13,
+    HWBOARD_GPIO_PUD_UP,
+    HWBOARD_GPIO_FSEL_OUT
+  };
+
   hwboard_gpio_init();
 
-  hwboard_gpio_cfg(STM32F103_PORT_C, 13, HWBOARD_GPIO_PUD_UP, HWBOARD_GPIO_FSEL_OUT);
+  hwboard_gpio_cfg(&gpiocfg_led);
   
   while (1)
   {
     for (int i = 0; i < 5; i++)
     {
       /* Turn on led connected to PC.13 pin */
-      hwboard_gpio_set(STM32F103_PORT_C, 13);
+      hwboard_gpio_set(&gpio_led);
       /* Insert delay */
       hwboard_delay(500 * 1000);
 
       /* Turn off led connected to PC.13 pin */
-      hwboard_gpio_clr(STM32F103_PORT_C, 13);
+      hwboard_gpio_clr(&gpio_led);
       /* Insert delay */
       hwboard_delay(500 * 1000);
     }

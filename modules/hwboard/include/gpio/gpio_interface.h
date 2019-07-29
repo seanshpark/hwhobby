@@ -36,24 +36,24 @@ void hwboard_gpio_close(void);
 /**
  * @brief Set port to High
  */
-void hwboard_gpio_set(ioport_t port, ioport_t pin);
+void hwboard_gpio_set(HW_GPIO_t* gpio);
 
 /**
  * @brief Clear port to Low
  */
-void hwboard_gpio_clr(ioport_t port, ioport_t pin);
+void hwboard_gpio_clr(HW_GPIO_t* gpio);
 
 /**
  * @brief Get port value
  */
-ioport_t hwboard_gpio_get(ioport_t port, ioport_t pin);
+ioport_t hwboard_gpio_get(HW_GPIO_t* gpio);
 
 /**
  * @brief Configure port
  * 
  * @note  This may change. RPi for now.
  */
-void hwboard_gpio_cfg(ioport_t port, ioport_t pin, uint8_t pud, uint8_t fsel);
+void hwboard_gpio_cfg(HW_GPIO_CFG_t* gpiocfg);
 
 #define HWBOARD_GPIO_PUD_OFF 0x00
 #define HWBOARD_GPIO_PUD_DN 0x01

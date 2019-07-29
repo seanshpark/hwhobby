@@ -22,8 +22,8 @@
 #include <unistd.h>
 
 // RPi
-ioport_t gpio_clock  = 23; // GPIO23
-ioport_t gpio_dataio = 24; // GPIO24
+static HW_GPIO_t _gpio_clock = { 0, 23 }; // GPIO23
+static HW_GPIO_t _gpio_data = { 0, 24 }; // GPIO24
 
 volatile sig_atomic_t quit;
 
@@ -48,7 +48,7 @@ void fill_data(LED4X7SEG_t* data, int value)
 
 int hwhobby_counter(void)
 {
-  if (led4x7seg_init(0, gpio_clock, 0, gpio_dataio) != HWRESULT_SUCCESS)
+  if (led4x7seg_init(&_gpio_clock, &_gpio_data) != HWRESULT_SUCCESS)
     return -1;
 
   uint8_t brightness = LED4x7SEG_BR_04;

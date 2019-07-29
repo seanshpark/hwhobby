@@ -20,94 +20,116 @@
 static const uint8_t CLOCK_DELAY = 20;
 static const uint8_t DATA_DELAY = 5;
 
-static ioport_t _port_clock = 0;
-static ioport_t _port_data = 0;
-static ioport_t _pin_clock = 0;
-static ioport_t _pin_data = 0;
+static HW_GPIO_t _gpio_clock;
+static HW_GPIO_t _gpio_data;
 
-void start(void)
+static void start(void)
 {
   // set both high to enter start
-  hwboard_gpio_set(_port_data, _pin_data);
-  hwboard_gpio_set(_port_clock, _pin_clock);
+  hwboard_gpio_set(&_gpio_data);
+  hwboard_gpio_set(&_gpio_clock);
   hwboard_delay(CLOCK_DELAY);
 
-  hwboard_gpio_clr(_port_data, _pin_data);
+  hwboard_gpio_clr(&_gpio_data);
   hwboard_delay(CLOCK_DELAY);
 }
 
-void stop(void)
+static void stop(void)
 {
-  hwboard_gpio_clr(_port_clock, _pin_clock);
+  hwboard_gpio_clr(&_gpio_clock);
   hwboard_delay(CLOCK_DELAY);
-  hwboard_gpio_clr(_port_data,_pin_data);
+  hwboard_gpio_clr(&_gpio_data);
   hwboard_delay(CLOCK_DELAY);
 
-  hwboard_gpio_set(_port_clock, _pin_clock);
+  hwboard_gpio_set(&_gpio_clock);
   hwboard_delay(CLOCK_DELAY);
-  hwboard_gpio_set(_port_data, _pin_data);
+  hwboard_gpio_set(&_gpio_data);
   hwboard_delay(CLOCK_DELAY);
 }
 
-void write_byte(uint8_t b)
+static void write_byte(uint8_t b)
 {
   for (int i = 0; i < 8; i++)
   {
-    hwboard_gpio_clr(_port_clock, _pin_clock);
+    hwboard_gpio_clr(&_gpio_clock);
     hwboard_delay(DATA_DELAY);
     if (b & 1) // send LSB to MSB
-      hwboard_gpio_set(_port_data, _pin_data);
+      hwboard_gpio_set(&_gpio_data);
     else
-      hwboard_gpio_clr(_port_data, _pin_data);
+      hwboard_gpio_clr(&_gpio_data);
     hwboard_delay(CLOCK_DELAY);
 
-    hwboard_gpio_set(_port_clock, _pin_clock);
+    hwboard_gpio_set(&_gpio_data);
     hwboard_delay(CLOCK_DELAY);
     b >>= 1; // next LSB
   }
 }
 
-void skip_ack(void)
+static void skip_ack(void)
 {
-  hwboard_gpio_clr(_port_clock, _pin_clock);
-  hwboard_gpio_clr(_port_data, _pin_data);
+  hwboard_gpio_clr(&_gpio_clock);
+  hwboard_gpio_clr(&_gpio_data);
   hwboard_delay(CLOCK_DELAY);
    
-  hwboard_gpio_set(_port_clock,_pin_clock);
+  hwboard_gpio_set(&_gpio_clock);
   hwboard_delay(CLOCK_DELAY);
 
-  hwboard_gpio_clr(_port_clock, _pin_clock);
+  hwboard_gpio_clr(&_gpio_clock);
   hwboard_delay(CLOCK_DELAY);
 }
 
-HWRESULT tm1637_init(ioport_t clock_port, ioport_t clock_pin, ioport_t data_port, ioport_t data_pin)
+HWRESULT tm1637_init(HW_GPIO_t* gpio_clock, HW_GPIO_t* gpio_data)
 {
   if (hwboard_gpio_init() != HWRESULT_SUCCESS)
     return HWRESULT_FAILED;
 
-  _port_clock = clock_port;
-  _pin_clock = clock_pin;
-  _port_data = data_port;
-  _pin_data = data_pin;
+  _gpio_clock = *gpio_clock;
+  _gpio_data = *gpio_data;
+
+  HW_GPIO_CFG_t gpiocfg_clock = {
+    _gpio_clock.port,
+    _gpio_clock.pin,
+    HWBOARD_GPIO_PUD_UP,
+    HWBOARD_GPIO_FSEL_OUT
+  };
+  HW_GPIO_CFG_t gpiocfg_data = {
+    _gpio_data.port,
+    _gpio_data.pin,
+    HWBOARD_GPIO_PUD_UP,
+    HWBOARD_GPIO_FSEL_OUT
+  };
 
   // set 'pull up down' to up, function select to output
-  hwboard_gpio_cfg(_port_clock, _pin_clock, HWBOARD_GPIO_PUD_UP, HWBOARD_GPIO_FSEL_OUT);
-  hwboard_gpio_cfg(_port_data, _pin_data, HWBOARD_GPIO_PUD_UP, HWBOARD_GPIO_FSEL_OUT);
+  hwboard_gpio_cfg(&gpiocfg_clock);
+  hwboard_gpio_cfg(&gpiocfg_data);
 
-  hwboard_gpio_clr(_port_clock, _pin_clock);
-  hwboard_gpio_clr(_port_data, _pin_data);
+  hwboard_gpio_clr(&_gpio_clock);
+  hwboard_gpio_clr(&_gpio_data);
   
   return HWRESULT_SUCCESS;
 }
 
 void tm1637_close(void)
 {
-  hwboard_gpio_clr(_port_clock, _pin_clock);
-  hwboard_gpio_clr(_port_data, _pin_data);
+  hwboard_gpio_clr(&_gpio_clock);
+  hwboard_gpio_clr(&_gpio_data);
+
+  HW_GPIO_CFG_t gpiocfg_clock = {
+    _gpio_clock.port,
+    _gpio_clock.pin,
+    HWBOARD_GPIO_PUD_OFF,
+    HWBOARD_GPIO_FSEL_INP
+  };
+  HW_GPIO_CFG_t gpiocfg_data = {
+    _gpio_data.port,
+    _gpio_data.pin,
+    HWBOARD_GPIO_PUD_OFF,
+    HWBOARD_GPIO_FSEL_INP
+  };
 
   // set 'pull up down' to off, function select to input(high impedance)
-  hwboard_gpio_cfg(_port_clock, _pin_clock, HWBOARD_GPIO_PUD_OFF, HWBOARD_GPIO_FSEL_INP);
-  hwboard_gpio_cfg(_port_data, _pin_data, HWBOARD_GPIO_PUD_OFF, HWBOARD_GPIO_FSEL_INP);
+  hwboard_gpio_cfg(&gpiocfg_clock);
+  hwboard_gpio_cfg(&gpiocfg_data);
 
   hwboard_gpio_close();
 }

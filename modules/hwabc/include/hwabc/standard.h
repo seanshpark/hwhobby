@@ -47,6 +47,24 @@ typedef enum {
 
 } HWRESULT;
 
+// GPIO interface
+typedef struct _HW_GPIO_t
+{
+  ioport_t port;
+  ioport_t pin;
+
+} HW_GPIO_t;
+
+typedef struct _HW_GPIO_CFG_t
+{
+  ioport_t port;
+  ioport_t pin;
+
+  uint8_t pud;
+  uint8_t fsel;
+
+} HW_GPIO_CFG_t;
+
 //
 // I2C initialization structure
 //
