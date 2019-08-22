@@ -14,12 +14,27 @@
 # limitations under the License.
 #
 
-if("${TARGET_BOARD}" STREQUAL "rpi64")
-  return()
-endif()
+#
+# aarch64 linux compile options
+#
 
-add_subdirectory(led4x7seg)
-add_subdirectory(hc-sr04)
+#
+# TODO enable this
+#
+# check native or cross build
+#if(NOT EXISTS "/lib/aarch64-linux-gnu")
+#  # ROOTFS_ARM should be defined
+#  if(NOT EXISTS $ENV{ROOTFS_ARM})
+#    message(FATAL_ERROR "Please set ROOTFS_ARM environment to target ARM ROOTFS to build")
+#  endif()
+#endif()
 
-add_subdirectory(i2clcd)
-add_subdirectory(lcd1602)
+message("-- Building for aarch64 Linux")
+
+# set linux common flags
+include("cmake/option/option_linux-common.cmake")
+
+# addition for arm-linux
+set(FLAGS_COMMON ${FLAGS_COMMON}
+                 "-march=armv8-a"
+)
