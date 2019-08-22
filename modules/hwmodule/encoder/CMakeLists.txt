@@ -14,10 +14,11 @@
 # limitations under the License.
 #
 
-add_subdirectory(led4x7seg)
-add_subdirectory(hc-sr04)
+#
+# target encoder for encoders, typical rotary encoder incremental
+#
+set(SRC src/encoder_rot_inc.c)
 
-add_subdirectory(i2clcd)
-add_subdirectory(lcd1602)
-
-add_subdirectory(encoder)
+add_library(hwmodencoder ${SRC})
+target_include_directories(hwmodencoder PUBLIC include)
+target_link_libraries(hwmodencoder PUBLIC hwboardgpio)

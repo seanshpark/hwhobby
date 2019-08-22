@@ -115,6 +115,35 @@ ioport_t hwboard_gpio_get(HW_GPIO_t* gpio)
   return 0;
 }
 
+void hwboard_gpio_fen(HW_GPIO_t* gpio, uint8_t enable)
+{
+  RPiGPIOPin hwpin = hwpin_from_gpio(gpio->pin);
+
+  if (hwpin != RPI_V2_GPIO_P1_XX)
+  {
+    if (enable)
+      bcm2835_gpio_fen(hwpin);
+    else
+      bcm2835_gpio_clr_fen(hwpin);
+  }
+}
+
+uint8_t hwboard_gpio_eds(HW_GPIO_t* gpio, uint8_t clear)
+{
+  RPiGPIOPin hwpin = hwpin_from_gpio(gpio->pin);
+
+  if (hwpin != RPI_V2_GPIO_P1_XX)
+  {
+    if (clear)
+    {
+      bcm2835_gpio_set_eds(hwpin);
+      return 0;
+    }
+    return bcm2835_gpio_eds(hwpin);
+  }
+  return 0;
+}
+
 void hwboard_gpio_cfg(HW_GPIO_CFG_t* gpiocfg)
 {
   RPiGPIOPin hwpin = hwpin_from_gpio(gpiocfg->pin);

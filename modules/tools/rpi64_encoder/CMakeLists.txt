@@ -14,10 +14,11 @@
 # limitations under the License.
 #
 
-add_subdirectory(led4x7seg)
-add_subdirectory(hc-sr04)
+#
+# target encoder that reads encoder values and shows value to LCD1602
+#
+set(SRC src/encoder.cpp)
 
-add_subdirectory(i2clcd)
-add_subdirectory(lcd1602)
-
-add_subdirectory(encoder)
+add_executable(encoder_simple ${SRC})
+target_link_libraries(encoder_simple hwmodlcd1602)
+target_link_libraries(encoder_simple hwmodencoder)
