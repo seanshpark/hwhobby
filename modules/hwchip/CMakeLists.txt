@@ -14,6 +14,10 @@
 # limitations under the License.
 #
 
+if("${TARGET_BOARD}" STREQUAL "rpi64")
+  return()
+endif()
+
 add_subdirectory(tm1637)
 add_subdirectory(hd44780)
 add_subdirectory(pcf8574)
