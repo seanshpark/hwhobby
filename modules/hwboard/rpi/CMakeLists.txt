@@ -17,8 +17,8 @@
 if("${TARGET_BOARD}" STREQUAL "rpi")
   add_library(hwbrpi STATIC IMPORTED)
   set_target_properties(hwbrpi PROPERTIES
-      IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/lib/libbcm2835.a"
-      INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include"
+      IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/bcm2835-1.20/lib/libbcm2835.a"
+      INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/bcm2835-1.20/include"
   )
 endif()
 
@@ -33,7 +33,6 @@ endif()
 set(SRC src/gpio_bcm2835.c)
 
 add_library(hwboardgpio ${SRC})
-target_include_directories(hwboardgpio PUBLIC include)
 target_link_libraries(hwboardgpio PUBLIC hwabc)
 target_link_libraries(hwboardgpio PUBLIC hwgpiodef)
 target_link_libraries(hwboardgpio PUBLIC hwbrpi)
