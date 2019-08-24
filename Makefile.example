@@ -18,6 +18,11 @@ ifeq ($(TARGET_DEVICE),RPI)
 	TD_BOARDNAME = rpi
 	TD_ROOFS_ARM ?= $(HOME)/rootfs/arm.buster
 endif
+ifeq ($(TARGET_DEVICE),RPI64)
+	TD_PLATFORM = aarch64-linux
+	TD_BOARDNAME = rpi64
+	TD_ROOFS_ARM ?= $(HOME)/rootfs/arm64.bionic
+endif
 ifeq ($(TARGET_DEVICE),STM32F103)
 	TD_PLATFORM = cortex-m3-none
 	TD_BOARDNAME = stm32f103c8t6
@@ -39,7 +44,7 @@ CMAKE_HOME = -H./
 # phony dependencies
 PHONY_DEPS := help create_build_path
 # our targets
-PHONY_DEPS += rpi stm32f103
+PHONY_DEPS += rpi rpi64 stm32f103
 # internal cmake targets
 PHONY_DEPS += cmake_configure cmake_configure
 PHONY_DEPS += cmake_build
@@ -50,6 +55,7 @@ PHONY_DEPS += cmake_build
 help:
 	@echo "Make targets to build"
 	@echo "  make rpi"
+	@echo "  make rpi64"
 	@echo "  make stm32f103 (or just stm)"
 	@echo "Make targets to write binary to flash"
 	@echo "  make stmflash"
@@ -78,7 +84,9 @@ cmake_build:
 flash_stm32f103:
 	# stm32flash -b 9600 -w $(BUILD_PATH)/modules/tools/stm_blinker/stm_blinker.bin /dev/ttyUSB0
 	# stm32flash -b 9600 -w $(BUILD_PATH)/modules/tools/stm_blinker2/stm_blinker2.bin /dev/ttyUSB0
-	stm32flash -b 9600 -w $(BUILD_PATH)/modules/tools/stm_counter/stm_led47counter.bin /dev/ttyUSB0
+	# stm32flash -b 9600 -w $(BUILD_PATH)/modules/tools/stm_counter/stm_led47counter.bin /dev/ttyUSB0
+	# stm32flash -b 9600 -w $(BUILD_PATH)/modules/tools/stm_lcd1602/stm_lcd1602.bin /dev/ttyUSB0
+	stm32flash -b 9600 -w $(BUILD_PATH)/modules/tools/stm_adc_one/stm_adc_one.bin /dev/ttyUSB0
 
 #
 # targets for users
@@ -87,6 +95,11 @@ rpi:
 	TARGET_DEVICE=RPI make create_build_path
 	TARGET_DEVICE=RPI make cmake_configure
 	TARGET_DEVICE=RPI make cmake_build
+
+rpi64:
+	TARGET_DEVICE=RPI64 make create_build_path
+	TARGET_DEVICE=RPI64 make cmake_configure
+	TARGET_DEVICE=RPI64 make cmake_build
 
 stm32f103:
 	TARGET_DEVICE=STM32F103 make create_build_path

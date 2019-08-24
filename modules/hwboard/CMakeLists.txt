@@ -24,7 +24,12 @@ target_include_directories(hwgpiodef INTERFACE include)
 # define target 'hwboardgpio' for the board 
 #
 message(STATUS "TARGET_BOARD = ${TARGET_BOARD}")
+
 if("${TARGET_BOARD}" STREQUAL "rpi")
+  add_subdirectory(rpi)
+endif()
+
+if("${TARGET_BOARD}" STREQUAL "rpi64")
   add_subdirectory(rpi)
 endif()
 
