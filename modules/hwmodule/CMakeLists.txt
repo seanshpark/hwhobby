@@ -14,10 +14,6 @@
 # limitations under the License.
 #
 
-if("${TARGET_BOARD}" STREQUAL "rpi64")
-  return()
-endif()
-
 add_subdirectory(led4x7seg)
 add_subdirectory(hc-sr04)
 

@@ -14,11 +14,21 @@
 # limitations under the License.
 #
 
-add_library(hwbrpi STATIC IMPORTED)
-set_target_properties(hwbrpi PROPERTIES
-    IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/lib/libbcm2835.a"
-    INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include"
-)
+if("${TARGET_BOARD}" STREQUAL "rpi")
+  add_library(hwbrpi STATIC IMPORTED)
+  set_target_properties(hwbrpi PROPERTIES
+      IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/lib/libbcm2835.a"
+      INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include"
+  )
+endif()
+
+if("${TARGET_BOARD}" STREQUAL "rpi64")
+  add_library(hwbrpi STATIC IMPORTED)
+  set_target_properties(hwbrpi PROPERTIES
+      IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/bcm2835-1.60/lib64/libbcm2835.a"
+      INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/bcm2835-1.60/include"
+  )
+endif()
 
 set(SRC src/gpio_bcm2835.c)
 
