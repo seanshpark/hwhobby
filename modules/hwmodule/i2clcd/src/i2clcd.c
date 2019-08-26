@@ -41,9 +41,6 @@ static void _send_byte(uint8_t lcddata, uint32_t delay)
 
 HWRESULT i2clcd_init(HW_I2C_INIT_t* pi2cinit)
 {
-  if (hwboard_gpio_init() != HWRESULT_SUCCESS)
-    return HWRESULT_FAILED;
-
   if (pcf8574_init(pi2cinit) != HWRESULT_SUCCESS)
     return HWRESULT_FAILED;
 
@@ -53,7 +50,6 @@ HWRESULT i2clcd_init(HW_I2C_INIT_t* pi2cinit)
 void i2clcd_close(void)
 {
   pcf8574_close();
-  hwboard_gpio_close();
 }
 
 void i2clcd_init_4bit(void)

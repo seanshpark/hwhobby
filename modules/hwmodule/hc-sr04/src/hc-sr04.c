@@ -23,9 +23,6 @@ static HW_GPIO_t _gpio_echo;
 
 HWRESULT hcsr04_init(HW_GPIO_t* gpio_trig, HW_GPIO_t* gpio_echo)
 {
-  if (hwboard_gpio_init() != HWRESULT_SUCCESS)
-    return 0;
-
   _gpio_trig = *gpio_trig;
   _gpio_echo = *gpio_echo;
 
@@ -72,8 +69,6 @@ void hcsr04_close(void)
   // set 'pull up down' to off, function select to input(high impedance)
   hwboard_gpio_cfg(&gpiocfg_trig);
   hwboard_gpio_cfg(&gpiocfg_echo);
-
-  hwboard_gpio_close();
 }
 
 int hcsr04_measure_time(void)

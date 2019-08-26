@@ -80,9 +80,6 @@ static void skip_ack(void)
 
 HWRESULT tm1637_init(HW_GPIO_t* gpio_clock, HW_GPIO_t* gpio_data)
 {
-  if (hwboard_gpio_init() != HWRESULT_SUCCESS)
-    return HWRESULT_FAILED;
-
   _gpio_clock = *gpio_clock;
   _gpio_data = *gpio_data;
 
@@ -130,8 +127,6 @@ void tm1637_close(void)
   // set 'pull up down' to off, function select to input(high impedance)
   hwboard_gpio_cfg(&gpiocfg_clock);
   hwboard_gpio_cfg(&gpiocfg_data);
-
-  hwboard_gpio_close();
 }
 
 void tm1637_writes(uint8_t *data, int length)

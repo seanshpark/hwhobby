@@ -45,6 +45,9 @@ void fill_data(LED4X7SEG_t* data, int value)
 
 int hwhobby_counter(void)
 {
+  if (hwboard_gpio_init() != HWRESULT_SUCCESS)
+    return -1;
+
   if (led4x7seg_init(&_gpio_clock, &_gpio_data) != HWRESULT_SUCCESS)
     return -1;
 
@@ -75,6 +78,10 @@ int hwhobby_counter(void)
     led4x7seg_show(&display);
     hwboard_delay_ms(1000);
   }
+
+  led4x7seg_close();
+
+  hwboard_gpio_close();
 
   return 0;
 }
