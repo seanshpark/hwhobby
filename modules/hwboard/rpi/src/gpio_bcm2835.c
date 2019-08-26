@@ -21,18 +21,29 @@
 #include <time.h>
 #include <unistd.h> // for usleep
 
+// multiple call of init
+static uint8_t __gpio_init = 0;
+
 HWRESULT hwboard_gpio_init(void)
 {
-  if (bcm2835_init() != HWRESULT_SUCCESS)
+  if (!__gpio_init)
   {
-    return HWRESULT_FAILED;
+    if (bcm2835_init() != HWRESULT_SUCCESS)
+    {
+      return HWRESULT_FAILED;
+    }
+    __gpio_init = 1;
   }
   return HWRESULT_SUCCESS;
 }
 
 void hwboard_gpio_close(void)
 {
-  bcm2835_close();
+  if (__gpio_init)
+  {
+    bcm2835_close();
+    __gpio_init = 0;
+  }
 }
 
 #define RPI_V2_GPIO_P1_XX 0xffff

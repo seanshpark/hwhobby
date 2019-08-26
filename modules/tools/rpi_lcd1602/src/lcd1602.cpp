@@ -16,6 +16,8 @@
 
 #include <hwmodule/lcd1602.h>
 
+#include <gpio/gpio_interface.h>
+
 #include <signal.h>
 
 volatile sig_atomic_t quit = 0;
@@ -32,6 +34,9 @@ void signal_handler(int sig)
 
 int hwhobby_lcd1602(void)
 {
+  if (hwboard_gpio_init() != HWRESULT_SUCCESS)
+    return HWRESULT_FAILED;
+
   HW_I2C_INIT_t i2cinit;
 
   i2cinit.i2caddr = I2C_ADDR;
@@ -45,6 +50,8 @@ int hwhobby_lcd1602(void)
   lcd1602_puts("World !!!");
 
   lcd1602_close();
+
+  hwboard_gpio_close();
 
   return 0;
 }

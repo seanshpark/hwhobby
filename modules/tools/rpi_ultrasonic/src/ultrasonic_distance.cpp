@@ -36,6 +36,9 @@ void signal_handler(int sig)
 
 int hwhobby_counter(void)
 {
+  if (hwboard_gpio_init() != HWRESULT_SUCCESS)
+    return -1;
+
   if (hcsr04_init(&_gpio_trig, &_gpio_echo) != HWRESULT_SUCCESS)
     return -1;
 
@@ -50,6 +53,8 @@ int hwhobby_counter(void)
   }
 
   hcsr04_close();
+
+  hwboard_gpio_close();
 
   return 0;
 }
