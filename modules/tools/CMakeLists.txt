@@ -27,6 +27,7 @@ endif()
 if("${TARGET_BOARD}" STREQUAL "rpi64")
   add_subdirectory(rpi64_hello)
   add_subdirectory(rpi_lcd1602)
+  add_subdirectory(rpi64_encoder)
 endif()
 
 if("${TARGET_BOARD}" STREQUAL "stm32f103c8t6")

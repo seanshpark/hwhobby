@@ -49,6 +49,14 @@ void hwboard_gpio_clr(HW_GPIO_t* gpio);
 ioport_t hwboard_gpio_get(HW_GPIO_t* gpio);
 
 /**
+ * @brief Set falling edge detect enable
+ *
+ * @note  Experimental
+ */
+void hwboard_gpio_fen(HW_GPIO_t* gpio, uint8_t enable);
+uint8_t hwboard_gpio_eds(HW_GPIO_t* gpio, uint8_t clear);
+
+/**
  * @brief Configure port
  * 
  * @note  This may change. RPi for now.
