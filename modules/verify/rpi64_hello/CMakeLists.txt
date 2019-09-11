@@ -15,12 +15,8 @@
 #
 
 #
-# include sub directoies in orders of dependency
+# target rpi64hello world for Arm64 Cross compilation
 #
-add_subdirectory(hwabc) # H/W abc (too lazy to give a better name)
-add_subdirectory(hwboard)
-add_subdirectory(hwchip)
-add_subdirectory(hwmodule)
+set(SRC src/hello.cpp)
 
-add_subdirectory(tools)
-add_subdirectory(verify)
+add_executable(rpi64hello ${SRC})

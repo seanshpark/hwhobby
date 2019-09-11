@@ -25,7 +25,6 @@ if("${TARGET_BOARD}" STREQUAL "rpi")
 endif()
 
 if("${TARGET_BOARD}" STREQUAL "rpi64")
-  add_subdirectory(rpi64_hello)
   add_subdirectory(rpi_lcd1602)
 endif()
 

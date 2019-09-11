@@ -15,8 +15,16 @@
 #
 
 #
-# target hello world for Arm64 Cross compilation
+# verifiy projects depending on the target board
 #
-set(SRC src/hello.cpp)
 
-add_executable(hello ${SRC})
+if("${TARGET_BOARD}" STREQUAL "rpi")
+endif()
+
+if("${TARGET_BOARD}" STREQUAL "rpi64")
+  add_subdirectory(rpi64_hello)
+endif()
+
+if("${TARGET_BOARD}" STREQUAL "stm32f103c8t6")
+
+endif()
