@@ -15,18 +15,13 @@
 #
 
 #
-# verifiy projects depending on the target board
+# target libgpiod for RPi 64bit aarch64
 #
 
-if("${TARGET_BOARD}" STREQUAL "rpi")
-
-endif()
-
 if("${TARGET_BOARD}" STREQUAL "rpi64")
-  add_subdirectory(rpi64_hello)
-  add_subdirectory(rpi64_libgpiod)
-endif()
-
-if("${TARGET_BOARD}" STREQUAL "stm32f103c8t6")
-
+  add_library(libgpiod STATIC IMPORTED GLOBAL)
+  set_target_properties(libgpiod PROPERTIES
+      IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/lib64/libgpiod.a"
+      INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include"
+  )
 endif()
