@@ -14,19 +14,13 @@
 # limitations under the License.
 #
 
+
 #
-# verifiy projects depending on the target board
+# target hello world for libgpiod
 #
+set(SRC src/hellogpiod.cpp)
 
-if("${TARGET_BOARD}" STREQUAL "rpi")
-
-endif()
-
-if("${TARGET_BOARD}" STREQUAL "rpi64")
-  add_subdirectory(rpi64_hello)
-  add_subdirectory(rpi64_libgpiod)
-endif()
-
-if("${TARGET_BOARD}" STREQUAL "stm32f103c8t6")
-
-endif()
+add_executable(rpi64hellogpiod ${SRC})
+target_link_libraries(rpi64hellogpiod libgpiod)
+target_link_libraries(rpi64hellogpiod hwboardgpio)
+target_link_libraries(rpi64hellogpiod hwmodlcd1602)
