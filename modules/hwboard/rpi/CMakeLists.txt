@@ -14,26 +14,10 @@
 # limitations under the License.
 #
 
-if("${TARGET_BOARD}" STREQUAL "rpi")
-  add_library(hwbrpi STATIC IMPORTED)
-  set_target_properties(hwbrpi PROPERTIES
-      IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/bcm2835-1.20/lib/libbcm2835.a"
-      INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/bcm2835-1.20/include"
-  )
-endif()
-
-if("${TARGET_BOARD}" STREQUAL "rpi64")
-  add_library(hwbrpi STATIC IMPORTED)
-  set_target_properties(hwbrpi PROPERTIES
-      IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/bcm2835-1.60/lib64/libbcm2835.a"
-      INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/bcm2835-1.60/include"
-  )
-endif()
-
 set(SRC src/gpio_bcm2835.c)
 
 add_library(hwboardgpio ${SRC})
 target_link_libraries(hwboardgpio PUBLIC hwabc)
 target_link_libraries(hwboardgpio PUBLIC hwgpiodef)
-target_link_libraries(hwboardgpio PUBLIC hwbrpi)
+target_link_libraries(hwboardgpio PUBLIC libbcm2835)
 target_link_libraries(hwboardgpio PUBLIC rt) # realtime system functions

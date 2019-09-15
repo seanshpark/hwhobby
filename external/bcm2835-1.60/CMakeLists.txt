@@ -14,6 +14,10 @@
 # limitations under the License.
 #
 
-add_subdirectory(bcm2835-1.20)
-add_subdirectory(bcm2835-1.60)
-add_subdirectory(libgpiod)
+if("${TARGET_BOARD}" STREQUAL "rpi64")
+  add_library(libbcm2835 STATIC IMPORTED GLOBAL)
+  set_target_properties(libbcm2835 PROPERTIES
+      IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/lib64/libbcm2835.a"
+      INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include"
+  )
+endif()
