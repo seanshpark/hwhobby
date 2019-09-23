@@ -27,6 +27,10 @@ if("${TARGET_BOARD}" STREQUAL "rpi64")
   add_subdirectory(rpi64_libgpiod)
 endif()
 
+if("${TARGET_BOARD}" STREQUAL "rpicd")
+  add_subdirectory(rpicd_encoder)
+endif()
+
 if("${TARGET_BOARD}" STREQUAL "stm32f103c8t6")
 
 endif()

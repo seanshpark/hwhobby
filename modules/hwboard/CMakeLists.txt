@@ -33,6 +33,11 @@ if("${TARGET_BOARD}" STREQUAL "rpi64")
   add_subdirectory(rpi)
 endif()
 
+if("${TARGET_BOARD}" STREQUAL "rpicd")
+  add_subdirectory(rpi)
+  add_subdirectory(rpicd)
+endif()
+
 if("${TARGET_BOARD}" STREQUAL "stm32f103c8t6")
   add_subdirectory(stm32f103c8t6)
   set(STM32F103_LINKER_FLAGS ${STM32F103_LINKER_FLAGS} PARENT_SCOPE)

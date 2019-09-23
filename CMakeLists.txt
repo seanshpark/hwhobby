@@ -28,7 +28,7 @@ include("${CMAKE_SOURCE_DIR}/cmake/options.cmake")
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 add_subdirectory(external)
 add_subdirectory(modules)
