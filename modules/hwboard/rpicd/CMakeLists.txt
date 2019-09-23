@@ -14,10 +14,10 @@
 # limitations under the License.
 #
 
-if("${TARGET_BOARD}" STREQUAL "rpi64" OR "${TARGET_BOARD}" STREQUAL "rpicd")
-  add_library(libbcm2835 STATIC IMPORTED GLOBAL)
-  set_target_properties(libbcm2835 PROPERTIES
-      IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/lib64/libbcm2835.a"
-      INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/include"
-  )
-endif()
+set(SRC src/rpicd_gpiod.cpp)
+
+add_library(hwboardcdgpio ${SRC})
+target_link_libraries(hwboardcdgpio PUBLIC hwabc)
+target_link_libraries(hwboardcdgpio PUBLIC hwgpiodef)
+target_link_libraries(hwboardcdgpio PUBLIC libgpiod)
+target_link_libraries(hwboardcdgpio PUBLIC rt) # realtime system functions
