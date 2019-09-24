@@ -15,7 +15,7 @@
 #
 
 #
-# target hwmodled4x7seg for 4 x 7seg LED module using TM1637 chip
+# target hwmodlcd1602 for 16x2 line LCD module with i2c control module
 #
 set(SRC src/lcd1602.c)
 
