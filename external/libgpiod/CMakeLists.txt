@@ -18,7 +18,7 @@
 # target libgpiod for RPi 64bit aarch64
 #
 
-if("${TARGET_BOARD}" STREQUAL "rpi64")
+if("${TARGET_BOARD}" STREQUAL "rpicd")
   add_library(libgpiod STATIC IMPORTED GLOBAL)
   set_target_properties(libgpiod PROPERTIES
       IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/lib64/libgpiod.a"

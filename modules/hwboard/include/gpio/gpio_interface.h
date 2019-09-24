@@ -69,6 +69,7 @@ void hwboard_gpio_cfg(HW_GPIO_CFG_t* gpiocfg);
 
 #define HWBOARD_GPIO_FSEL_INP 0x00
 #define HWBOARD_GPIO_FSEL_OUT 0x01
+#define HWBOARD_GPIO_FSEL_INP_FE 0x02 // Falling Edge
 
 void hwboard_delay(int usec);
 void hwboard_delay_ms(int msec);

@@ -14,24 +14,10 @@
 # limitations under the License.
 #
 
-#
-# verifiy projects depending on the target board
-#
+set(SRC src/gpio_cd.c)
 
-if("${TARGET_BOARD}" STREQUAL "rpi")
-
-endif()
-
-if("${TARGET_BOARD}" STREQUAL "rpi64")
-  add_subdirectory(rpi64_hello)
-  add_subdirectory(rpi64_libgpiod)
-endif()
-
-if("${TARGET_BOARD}" STREQUAL "rpicd")
-  add_subdirectory(rpicd_lcd1602)
-  add_subdirectory(rpicd_hellogpio)
-endif()
-
-if("${TARGET_BOARD}" STREQUAL "stm32f103c8t6")
-
-endif()
+add_library(hwboardgpio ${SRC})
+target_link_libraries(hwboardgpio PUBLIC hwabc)
+target_link_libraries(hwboardgpio PUBLIC hwgpiodef)
+target_link_libraries(hwboardgpio PUBLIC libgpiod)
+target_link_libraries(hwboardgpio PUBLIC rt) # realtime system functions
