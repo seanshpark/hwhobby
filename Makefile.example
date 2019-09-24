@@ -23,6 +23,11 @@ ifeq ($(TARGET_DEVICE),RPI64)
 	TD_BOARDNAME = rpi64
 	TD_ROOFS_ARM ?= $(HOME)/rootfs/arm64.bionic
 endif
+ifeq ($(TARGET_DEVICE),RPICD)
+	TD_PLATFORM = aarch64-linux
+	TD_BOARDNAME = rpicd
+	TD_ROOFS_ARM ?= $(HOME)/rootfs/arm64.bionic
+endif
 ifeq ($(TARGET_DEVICE),STM32F103)
 	TD_PLATFORM = cortex-m3-none
 	TD_BOARDNAME = stm32f103c8t6
@@ -44,7 +49,7 @@ CMAKE_HOME = -H./
 # phony dependencies
 PHONY_DEPS := help create_build_path
 # our targets
-PHONY_DEPS += rpi rpi64 stm32f103
+PHONY_DEPS += rpi rpi64 rpicd stm32f103
 # internal cmake targets
 PHONY_DEPS += cmake_configure cmake_configure
 PHONY_DEPS += cmake_build
@@ -56,6 +61,7 @@ help:
 	@echo "Make targets to build"
 	@echo "  make rpi"
 	@echo "  make rpi64"
+	@echo "  make rpicd"
 	@echo "  make stm32f103 (or just stm)"
 	@echo "Make targets to write binary to flash"
 	@echo "  make stmflash"
@@ -100,6 +106,11 @@ rpi64:
 	TARGET_DEVICE=RPI64 make create_build_path
 	TARGET_DEVICE=RPI64 make cmake_configure
 	TARGET_DEVICE=RPI64 make cmake_build
+
+rpicd:
+	TARGET_DEVICE=RPICD make create_build_path
+	TARGET_DEVICE=RPICD make cmake_configure
+	TARGET_DEVICE=RPICD make cmake_build
 
 stm32f103:
 	TARGET_DEVICE=STM32F103 make create_build_path
