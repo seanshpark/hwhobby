@@ -15,23 +15,9 @@
 #
 
 #
-# verifiy projects depending on the target board
+# target rpicd_lcd1602 hello lcd1602 with libgpiod
 #
+set(SRC src/lcd1602.cpp)
 
-if("${TARGET_BOARD}" STREQUAL "rpi")
-
-endif()
-
-if("${TARGET_BOARD}" STREQUAL "rpi64")
-  add_subdirectory(rpi64_hello)
-  add_subdirectory(rpi64_libgpiod)
-endif()
-
-if("${TARGET_BOARD}" STREQUAL "rpicd")
-  add_subdirectory(rpicd_lcd1602)
-  add_subdirectory(rpicd_hellogpio)
-endif()
-
-if("${TARGET_BOARD}" STREQUAL "stm32f103c8t6")
-
-endif()
+add_executable(rpicd_lcd1602 ${SRC})
+target_link_libraries(rpicd_lcd1602 hwmodlcd1602)
