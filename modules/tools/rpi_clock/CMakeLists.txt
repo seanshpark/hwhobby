@@ -1,5 +1,5 @@
 #
-# Copyright 2019 saehie.park@gmail.com
+# Copyright 2021 saehie.park@gmail.com
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,24 +15,9 @@
 #
 
 #
-# tools depending on the target board
+# target led47clock that displays counting numbers with RPi, LED4x7Seg
 #
+set(SRC src/led47clock.c)
 
-if("${TARGET_BOARD}" STREQUAL "rpi")
-  add_subdirectory(rpi_counter)
-  add_subdirectory(rpi_clock)
-  add_subdirectory(rpi_ultrasonic)
-  add_subdirectory(rpi_lcd1602)
-endif()
-
-if("${TARGET_BOARD}" STREQUAL "rpi64")
-  add_subdirectory(rpi_lcd1602)
-  add_subdirectory(rpi64_encoder)
-endif()
-
-if("${TARGET_BOARD}" STREQUAL "stm32f103c8t6")
-  add_subdirectory(stm_blinker)
-  add_subdirectory(stm_blinker2)
-  add_subdirectory(stm_counter)
-  add_subdirectory(stm_lcd1602)
-endif()
+add_executable(led47clock ${SRC})
+target_link_libraries(led47clock hwmodled4x7seg)
