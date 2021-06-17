@@ -27,12 +27,13 @@ HWRESULT tm1637_init(HW_GPIO_t* gpio_clock, HW_GPIO_t* gpio_data);
 void tm1637_close(void);
 
 // TM1637 Comamnd mode
-#define TM1637_CMD_DATA     0x40  // 0b01-- ----
-#define TM1637_CMD_DISPLAY  0x80  // 0b10-- ----
-#define TM1637_CMD_ADDR     0xC0  // 0b11-- ----
+#define TM1637_CMD_DATA     0x40  // 0b0100 ----
+#define TM1637_CMD_DISPLAY  0x80  // 0b1000 ----
+#define TM1637_CMD_ADDR     0xC0  // 0b1100 ----
 
 // TM1637_CMD_DATA mode
 #define TM1637_DATA_WRITE   0x00  // 0b---- --00
+#define TM1637_DATA_READ    0x02  // 0b---- --10
 #define TM1637_DATA_AUTOINC 0x00  // 0b---- -0--
 #define TM1637_DATA_FIXADDR 0x04  // 0b---- -1--
 #define TM1637_DATA_NORMAL  0x00  // 0b---- 0---
