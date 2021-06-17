@@ -17,17 +17,20 @@
 #include <hwchip/tm1637.h>
 #include <gpio/gpio_interface.h>
 
-static const uint8_t CLOCK_DELAY = 20;
-static const uint8_t DATA_DELAY = 5;
+static const uint32_t CLOCK_DELAY = 20;
+static const uint32_t DATA_DELAY  = 10;
 
 static HW_GPIO_t _gpio_clock;
 static HW_GPIO_t _gpio_data;
 
 static void start(void)
 {
+  // CLK 1111
+  // DIO 1100
+  //
   // set both high to enter start
-  hwboard_gpio_set(&_gpio_data);
   hwboard_gpio_set(&_gpio_clock);
+  hwboard_gpio_set(&_gpio_data);
   hwboard_delay(CLOCK_DELAY);
 
   hwboard_gpio_clr(&_gpio_data);
@@ -36,8 +39,8 @@ static void start(void)
 
 static void stop(void)
 {
-  hwboard_gpio_clr(&_gpio_clock);
-  hwboard_delay(CLOCK_DELAY);
+  // CLK 0111
+  // DIO 0011
   hwboard_gpio_clr(&_gpio_data);
   hwboard_delay(CLOCK_DELAY);
 
@@ -59,7 +62,7 @@ static void write_byte(uint8_t b)
       hwboard_gpio_clr(&_gpio_data);
     hwboard_delay(CLOCK_DELAY);
 
-    hwboard_gpio_set(&_gpio_data);
+    hwboard_gpio_set(&_gpio_clock);
     hwboard_delay(CLOCK_DELAY);
     b >>= 1; // next LSB
   }
@@ -68,9 +71,10 @@ static void write_byte(uint8_t b)
 static void skip_ack(void)
 {
   hwboard_gpio_clr(&_gpio_clock);
-  hwboard_gpio_clr(&_gpio_data);
+  hwboard_gpio_set(&_gpio_data);
+
   hwboard_delay(CLOCK_DELAY);
-   
+
   hwboard_gpio_set(&_gpio_clock);
   hwboard_delay(CLOCK_DELAY);
 
@@ -132,11 +136,13 @@ void tm1637_close(void)
 void tm1637_writes(uint8_t *data, int length)
 {
   start();
+
   for (int b = 0; b < length; b++)
   {
     write_byte(data[b]);
     skip_ack();
   }
+
   stop();
 }
 
