@@ -63,9 +63,9 @@ uint8_t hwboard_gpio_eds(HW_GPIO_t* gpio, uint8_t clear);
  */
 void hwboard_gpio_cfg(HW_GPIO_CFG_t* gpiocfg);
 
-#define HWBOARD_GPIO_PUD_OFF 0x00
-#define HWBOARD_GPIO_PUD_DN 0x01
-#define HWBOARD_GPIO_PUD_UP 0x02
+#define HWBOARD_GPIO_PUD_OFF  0x00
+#define HWBOARD_GPIO_PUD_DN   0x01
+#define HWBOARD_GPIO_PUD_UP   0x02
 
 #define HWBOARD_GPIO_FSEL_INP 0x00
 #define HWBOARD_GPIO_FSEL_OUT 0x01
