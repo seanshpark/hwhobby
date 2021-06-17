@@ -30,7 +30,7 @@ void signal_handler(int sig)
 
 #define I2C_ADDR_BLUE   0x3F            // my blue backlight LCD is 0x3f
 #define I2C_ADDR_YELLOW 0x27            // my yellow backlight LCD is 0x27
-#define I2C_ADDR        I2C_ADDR_BLUE
+#define I2C_ADDR        I2C_ADDR_YELLOW
 
 int hwhobby_lcd1602(void)
 {
