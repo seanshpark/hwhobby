@@ -26,6 +26,10 @@ HWRESULT led4x7seg_init(HW_GPIO_t* gpio_clock, HW_GPIO_t* gpio_data)
   if (tm1637_init(gpio_clock, gpio_data) != HWRESULT_SUCCESS)
     return HWRESULT_FAILED;
 
+  uint8_t command;
+  command = TM1637_CMD_DATA | TM1637_DATA_AUTOINC | TM1637_DATA_NORMAL;
+  tm1637_write(command);
+
   return HWRESULT_SUCCESS;
 }
 
