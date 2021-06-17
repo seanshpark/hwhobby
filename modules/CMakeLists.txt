@@ -22,5 +22,8 @@ add_subdirectory(hwboard)
 add_subdirectory(hwchip)
 add_subdirectory(hwmodule)
 
+add_subdirectory(lib)
+add_subdirectory(muvmodule)
+
 add_subdirectory(tools)
 add_subdirectory(verify)

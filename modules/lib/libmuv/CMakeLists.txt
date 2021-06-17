@@ -15,25 +15,11 @@
 #
 
 #
-# verifiy projects depending on the target board
+# target lib micro uv that provides callback handlers for events
 #
+set(SRC src/muv.cpp)
 
-if("${TARGET_BOARD}" STREQUAL "rpi")
-
-endif()
-
-if("${TARGET_BOARD}" STREQUAL "rpi64")
-  add_subdirectory(rpi64_hello)
-  add_subdirectory(rpi64_libgpiod)
-endif()
-
-if("${TARGET_BOARD}" STREQUAL "rpicd")
-  add_subdirectory(rpicd_lcd1602)
-  add_subdirectory(rpicd_hellogpio)
-  add_subdirectory(rpicd_runmuv)
-  add_subdirectory(rpicd_runmuvport)
-endif()
-
-if("${TARGET_BOARD}" STREQUAL "stm32f103c8t6")
-
-endif()
+add_library(muv ${SRC})
+target_include_directories(muv PUBLIC include)
+target_link_libraries(muv PUBLIC hwabc)
+target_link_libraries(muv PRIVATE libabc)

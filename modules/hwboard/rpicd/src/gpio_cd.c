@@ -115,7 +115,17 @@ ioport_t hwboard_gpio_get(HW_GPIO_t* gpio)
 
 void hwboard_gpio_fen(HW_GPIO_t* gpio, uint8_t enable)
 {
-  // TODO implement this
+  GpioLine_t* line = _get_line(gpio->pin);
+  if (line != NULL)
+  {
+    if (enable)
+    {
+      char pin_name[32];
+      sprintf(pin_name, "pname_%d", gpio->pin);
+      gpiod_line_request_falling_edge_events(line, pin_name);
+    }
+    // don't have disable
+  }
 }
 
 uint8_t hwboard_gpio_eds(HW_GPIO_t* gpio, uint8_t clear)

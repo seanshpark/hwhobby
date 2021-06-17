@@ -15,7 +15,7 @@
 #
 
 #
-# verifiy projects depending on the target board
+# library projects depending on the target board
 #
 
 if("${TARGET_BOARD}" STREQUAL "rpi")
@@ -23,15 +23,11 @@ if("${TARGET_BOARD}" STREQUAL "rpi")
 endif()
 
 if("${TARGET_BOARD}" STREQUAL "rpi64")
-  add_subdirectory(rpi64_hello)
-  add_subdirectory(rpi64_libgpiod)
+
 endif()
 
 if("${TARGET_BOARD}" STREQUAL "rpicd")
-  add_subdirectory(rpicd_lcd1602)
-  add_subdirectory(rpicd_hellogpio)
-  add_subdirectory(rpicd_runmuv)
-  add_subdirectory(rpicd_runmuvport)
+  add_subdirectory(muvport)
 endif()
 
 if("${TARGET_BOARD}" STREQUAL "stm32f103c8t6")
