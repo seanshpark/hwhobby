@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <gpio/gpio_interface.h>
 #include <hwmodule/led4x7seg.h>
 #include <bcm2835/bcm2835.h>
 
